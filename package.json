@@ -1,0 +1,17 @@
+{
+  "name": "my-time-tracker",
+  "version": "1.0.0",
+  "description": "time tracker",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "kirnet@tut.by",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
