@@ -26,8 +26,6 @@ class DefaultController extends AbstractController
      */
     public function index(Request $request, TranslatorInterface $translator)
     {
-//        var_dump($translator->trans('test')); die;
-        var_dump($this->user);
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
         ]);

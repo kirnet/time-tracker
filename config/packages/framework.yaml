@@ -30,3 +30,4 @@ framework:
         #app: cache.adapter.apcu
     templating:
         engines: ['twig', 'php']
+    translator: { fallbacks: ["%locale%"] }
