@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console;
 
-use App\Entity\User\User;
+use App\Entity\User;
 use MsgPhp\Domain\Infra\Console\Context\ClassContextElementFactoryInterface;
 use MsgPhp\Domain\Infra\Console\Context\ContextElement;
 use MsgPhp\User\Entity\Credential\EmailPassword;

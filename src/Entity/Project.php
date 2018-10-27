@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
-use App\Entity\User\User;
+use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  */
 class Project
 {
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -38,7 +40,7 @@ class Project
     private $userId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User\User", inversedBy="projects")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
      * @ORM\JoinColumn(nullable=false)
      */
     private $relation;

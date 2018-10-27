@@ -20,12 +20,12 @@
                             {#</a>#}
                             {#<a class="navbar-brand" href="{{ path('test') }}">Test page</a>#}
                             {% if app.user == false %}
-                                <a class="navbar-brand" href="{{ path('login') }}">
+                                <a class="navbar-brand" href="{{ path('app_login') }}">
                                     login
                                 </a>
-                                <a class="navbar-brand" href="{{ path('register') }}">
-                                    register
-                                </a>
+                                {#<a class="navbar-brand" href="{{ path('register') }}">#}
+                                    {#register#}
+                                {#</a>#}
                             {% endif %}
 
                             {% block header_navigation_links %}

@@ -13,10 +13,10 @@ framework:
         buses:
             command_bus:
                 middleware:
-                    - msgphp.messenger.console_message_receiver
+#                    - msgphp.messenger.console_message_receiver
             event_bus:
                 middleware:
-                    - msgphp.messenger.console_message_receiver
+#                    - msgphp.messenger.console_message_receiver
                     - allow_no_handler
 
 services:
