@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\User;
 
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use MsgPhp\User\Infra\Form\Type\HashedPasswordType;
 use MsgPhp\User\Infra\Validator\UniqueUsername as UniqueEmail;
 use Symfony\Component\Form\AbstractType;
@@ -22,6 +23,9 @@ final class RegisterType extends AbstractType
         $builder->add('password', HashedPasswordType::class, [
             'password_confirm' => true,
             'password_options' => ['constraints' => new NotBlank()],
+        ]);
+        $builder->add('login', TextType::class, [
+            'constraints' => [new NotBlank()]
         ]);
     }
 }

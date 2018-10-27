@@ -4,8 +4,49 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
+        <link rel="stylesheet" type="text/css" href="/build/css/global.css">
     </head>
     <body>
+        {% block header %}
+            <header>
+                <div class="navbar navbar-default navbar-static-top" role="navigation">
+                    <div class="container">
+                        <div class="navbar-header">
+                            {#<a class="navbar-brand" href="{{ path('default') }}">#}
+                                {#home#}
+                            {#</a>#}
+                            {#<a class="navbar-brand" href="{{ path('articles') }}">#}
+                                {#Articles#}
+                            {#</a>#}
+                            {#<a class="navbar-brand" href="{{ path('test') }}">Test page</a>#}
+                            {% if app.user == false %}
+                                <a class="navbar-brand" href="{{ path('login') }}">
+                                    login
+                                </a>
+                                <a class="navbar-brand" href="{{ path('register') }}">
+                                    register
+                                </a>
+                            {% endif %}
+
+                            {% block header_navigation_links %}
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a class="navbar-brand" href="{{ path('sonata_admin_redirect') }}">
+                                        {% trans %}admin{% endtrans %}
+                                    </a>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% if app.user %}
+                                <a class="navbar-brand" href="{{ path('logout') }}">
+                                    {% trans %}logout{% endtrans %}
+                                </a>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>
