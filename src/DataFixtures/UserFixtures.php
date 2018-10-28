@@ -16,10 +16,30 @@ class UserFixtures extends Fixture
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @param UserPasswordEncoderInterface $encoder
+     */
     public function load(ObjectManager $manager)
     {
-        $user = new User;
+        $user = new User();
+        $user->setEmail('admin@admin.by');
+        $user->setLogin('admin');
+        $user->setIsBanned(0);
+        $user->setRegisterAt(new \DateTime());
+        $user->setPassword($this->passwordEncoder->encodePassword($user, '111111'));
+        $user->setRoles(['ROLE_ADMIN']);
+        $manager->persist($user);
+        $manager->flush();
 
+        $user = new User();
+        $user->setEmail('user@user.by');
+        $user->setLogin('user');
+        $user->setIsBanned(0);
+        $user->setRegisterAt(new \DateTime());
+        $user->setPassword($this->passwordEncoder->encodePassword($user, '111111'));
+        $user->setRoles(['ROLE_USER']);
+        $manager->persist($user);
         $manager->flush();
     }
 }
