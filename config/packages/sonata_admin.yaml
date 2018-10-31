@@ -1,8 +1,8 @@
 sonata_admin:
-    title: 'Sonata Admin'
+    title: 'Tracker admin'
     dashboard:
         blocks:
-            - { type: sonata.admin.block.admin_list, position: right }
+            - { type: sonata.admin.block.admin_list, position: left }
 
 sonata_block:
     blocks:

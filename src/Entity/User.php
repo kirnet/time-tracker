@@ -4,13 +4,15 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable;
 use Sonata\BlockBundle\Block\Service\ContainerBlockService;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface
+class User implements UserInterface, Serializable
 {
     /**
      * @ORM\Id()
@@ -36,6 +38,22 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $login;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isBanned = false;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $registerAt;
+
+    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="relation", orphanRemoval=true)
      */
     private $projects;
@@ -45,9 +63,61 @@ class User implements UserInterface
      */
     public function __construct()
     {
+        $this->registerAt = new \DateTime();
         $this->projects = new ArrayCollection();
     }
 
+    /**
+     * @return mixed
+     */
+    public function getIsBanned()
+    {
+        return $this->isBanned;
+    }
+
+    /**
+     * @param mixed $isBanned
+     */
+    public function setIsBanned($isBanned): void
+    {
+        $this->isBanned = $isBanned;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRegisterAt()
+    {
+        return $this->registerAt;
+    }
+
+    /**
+     * @param mixed $registerAt
+     */
+    public function setRegisterAt($registerAt): void
+    {
+        $this->registerAt = $registerAt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
+    /**
+     * @param mixed $login
+     */
+    public function setLogin($login): void
+    {
+        $this->login = $login;
+    }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +160,9 @@ class User implements UserInterface
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
+        if (empty($roles)) {
+            $this->roles[] = 'ROLE_USER';
+        }
 
         return $this;
     }
@@ -105,7 +178,6 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -152,5 +224,25 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        // TODO: Implement serialize() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized): void
+    {
+        // add $this->salt too if you don't use Bcrypt or Argon2i
+        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
     }
 }

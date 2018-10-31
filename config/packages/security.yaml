@@ -26,12 +26,12 @@ security:
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-#            form_login:
-#                login_path: /login
-#                check_path: /login
+            form_login:
+                login_path: /login
+                check_path: /login
 #                default_target_path: /profile
-#                username_parameter: email
-#                password_parameter: password
+                username_parameter: email
+                password_parameter: password
 
             logout:
                 path: logout
