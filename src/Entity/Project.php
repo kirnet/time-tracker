@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
@@ -47,6 +48,7 @@ class Project
 
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->timers = new ArrayCollection();
     }
 

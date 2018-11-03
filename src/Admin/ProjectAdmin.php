@@ -25,12 +25,13 @@ class ProjectAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper->add('name', TextType::class);
-        $formMapper->add('description', TextType::class);
+        $formMapper->add('description', TextType::class, [
+            'required' => false
+        ]);
         $formMapper->add('created_at', DateTimeType::class);
         $formMapper->add('user', EntityType::class, [
             'class' => User::class,
-            'choice_label' => 'email',
-            //'attr' => ['value' => $user->getId()]
+            'choice_label' => 'email'
         ]);
     }
 

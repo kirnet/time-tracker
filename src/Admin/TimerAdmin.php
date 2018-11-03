@@ -32,7 +32,10 @@ class TimerAdmin extends AbstractAdmin
         ]);
         $formMapper->add('project', EntityType::class, [
             'class' => Project::class,
-            'choice_label' => 'name'
+            'choice_label' => 'name',
+            'required'   => false,
+            'empty_data' => '',
+            'placeholder' => 'select project'
         ]);
 
         $formMapper->add('state', ChoiceType::class, [
@@ -45,7 +48,9 @@ class TimerAdmin extends AbstractAdmin
         ]);
         $formMapper->add('created_at', DateTimeType::class);
         $formMapper->add('name', TextType::class);
-        $formMapper->add('time', IntegerType::class);
+        $formMapper->add('time', IntegerType::class, [
+            'attr' => ['value' => 0]
+        ]);
 
 
     }
@@ -57,6 +62,8 @@ class TimerAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper->add('name');
+        $datagridMapper->add('project.name');
+        $datagridMapper->add('state');
     }
 
     /**
