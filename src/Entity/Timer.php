@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Timer
 {
+    const STATE_RUNING = 'run';
+    const STATE_PAUSED = 'pause';
+    const STATE_STOPPED = 'stop';
+    const STATE_NEW = 'new';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -44,9 +49,14 @@ class Timer
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="timer")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -73,7 +83,9 @@ class Timer
     public function setState(string $state): self
     {
         $this->state = $state;
-
+        if (empty($this->state)) {
+            $this->state = self::STATE_NEW;
+        }
         return $this;
     }
 
@@ -97,7 +109,9 @@ class Timer
     public function setTime(int $time): self
     {
         $this->time = $time;
-
+        if (empty($this->time)) {
+            $this->time = 0;
+        }
         return $this;
     }
 
@@ -121,6 +135,21 @@ class Timer
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime();
+        }
 
         return $this;
     }

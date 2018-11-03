@@ -2,7 +2,6 @@
 
 namespace App\Admin;
 
-use App\Entity\Project;
 use App\Entity\User;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -13,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Sonata\CoreBundle\Form\Type\BooleanType;
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 

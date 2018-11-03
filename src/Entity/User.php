@@ -37,7 +37,7 @@ class User implements UserInterface, Serializable
     private $password;
 
     /**
-     * @var string The hashed password
+     * @var string The user login
      * @ORM\Column(type="string", unique=true)
      */
     private $login;

@@ -41,3 +41,9 @@ services:
         tags:
         - { name: sonata.admin, manager_type: orm, label: User }
         public: true
+    admin.timer:
+        class: App\Admin\TimerAdmin
+        arguments: [~, App\Entity\Timer, ~]
+        tags:
+        - { name: sonata.admin, manager_type: orm, label: Timer }
+        public: true

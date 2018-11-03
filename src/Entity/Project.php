@@ -34,7 +34,6 @@ class Project
      */
     private $createdAt;
 
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Timer", mappedBy="project")
      */
@@ -45,27 +44,6 @@ class Project
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
-
-//    /**
-//     * @ORM\Column(type="integer")
-//     */
-//    private $userId;
-
-//    /**
-//     * @return mixed
-//     */
-//    public function getUserId()
-//    {
-//        return $this->userId;
-//    }
-//
-//    /**
-//     * @param mixed $userId
-//     */
-//    public function setUserId($userId): void
-//    {
-//        $this->userId = $userId;
-//    }
 
     public function __construct()
     {
