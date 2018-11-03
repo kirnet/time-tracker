@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use App\Entity\User;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
@@ -34,16 +34,43 @@ class Project
      */
     private $createdAt;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $userId;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="projects")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity="App\Entity\Timer", mappedBy="project")
      */
-    private $relation;
+    private $timers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="projects")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    private $user;
+
+//    /**
+//     * @ORM\Column(type="integer")
+//     */
+//    private $userId;
+
+//    /**
+//     * @return mixed
+//     */
+//    public function getUserId()
+//    {
+//        return $this->userId;
+//    }
+//
+//    /**
+//     * @param mixed $userId
+//     */
+//    public function setUserId($userId): void
+//    {
+//        $this->userId = $userId;
+//    }
+
+    public function __construct()
+    {
+        $this->timers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,27 +113,47 @@ class Project
         return $this;
     }
 
-    public function getUserId(): ?int
+    /**
+     * @return Collection|Timer[]
+     */
+    public function getTimers(): Collection
     {
-        return $this->userId;
+        return $this->timers;
     }
 
-    public function setUserId(int $userId): self
+    public function addTimer(Timer $timer): self
     {
-        $this->userId = $userId;
+        if (!$this->timers->contains($timer)) {
+            $this->timers[] = $timer;
+            $timer->setProject($this);
+        }
 
         return $this;
     }
 
-    public function getRelation(): ?User
+    public function removeTimer(Timer $timer): self
     {
-        return $this->relation;
-    }
-
-    public function setRelation(?User $relation): self
-    {
-        $this->relation = $relation;
+        if ($this->timers->contains($timer)) {
+            $this->timers->removeElement($timer);
+            // set the owning side to null (unless already changed)
+            if ($timer->getProject() === $this) {
+                $timer->setProject(null);
+            }
+        }
 
         return $this;
     }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
 }

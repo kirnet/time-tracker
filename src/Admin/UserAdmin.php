@@ -8,11 +8,13 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Sonata\CoreBundle\Form\Type\BooleanType;
+
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
@@ -38,12 +40,20 @@ class UserAdmin extends AbstractAdmin
      */
     protected function configureFormFields(FormMapper $formMapper)
     {
+        $isNew = !(bool) $this->request->get('id');
         $formMapper->add('email', TextType::class);
         $formMapper->add('login', TextType::class);
         $formMapper->add('register_at', DateTimeType::class);
         $formMapper->add('roles', CollectionType::class);
-        $formMapper->add('password', PasswordType::class);
-//        $formMapper->add('is_banned', IntegerType::class);
+        $formMapper->add('password', PasswordType::class, [
+            'required' => $isNew
+        ]);
+        $formMapper->add('is_banned', ChoiceType::class, [
+            'choices' => [
+                'yes' => true,
+                'no' => false,
+            ]
+        ]);
     }
 
 

@@ -18,7 +18,7 @@ security:
             security: false
         main:
             anonymous: true
-#            provider: msgphp_user
+            provider: app_user_provider
 
             # activate different ways to authenticate
 
@@ -43,4 +43,4 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
+#        - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }

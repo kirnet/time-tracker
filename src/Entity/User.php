@@ -3,10 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Serializable;
-use Sonata\BlockBundle\Block\Service\ContainerBlockService;
-use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -39,7 +38,7 @@ class User implements UserInterface, Serializable
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     private $login;
 
@@ -54,9 +53,14 @@ class User implements UserInterface, Serializable
     private $registerAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="relation", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user", orphanRemoval=true)
      */
     private $projects;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Timer", mappedBy="user", orphanRemoval=true)
+     */
+    private $timer;
 
     /**
      * User constructor.
@@ -65,6 +69,7 @@ class User implements UserInterface, Serializable
     {
         $this->registerAt = new \DateTime();
         $this->projects = new ArrayCollection();
+        $this->timer = new ArrayCollection();
     }
 
     /**
@@ -198,6 +203,29 @@ class User implements UserInterface, Serializable
         // $this->plainPassword = null;
     }
 
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize([$this->id, $this->email, $this->password]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function unserialize($serialized): void
+    {
+        // add $this->salt too if you don't use Bcrypt or Argon2i
+        [$this->id, $this->email, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
     public function getProjects(): Collection
     {
         return $this->projects;
@@ -207,7 +235,7 @@ class User implements UserInterface, Serializable
     {
         if (!$this->projects->contains($project)) {
             $this->projects[] = $project;
-            $project->setRelation($this);
+            $project->setUser($this);
         }
 
         return $this;
@@ -218,8 +246,8 @@ class User implements UserInterface, Serializable
         if ($this->projects->contains($project)) {
             $this->projects->removeElement($project);
             // set the owning side to null (unless already changed)
-            if ($project->getRelation() === $this) {
-                $project->setRelation(null);
+            if ($project->getUser() === $this) {
+                $project->setUser(null);
             }
         }
 
@@ -227,22 +255,34 @@ class User implements UserInterface, Serializable
     }
 
     /**
-     * String representation of object
-     * @link https://php.net/manual/en/serializable.serialize.php
-     * @return string the string representation of the object or null
-     * @since 5.1.0
+     * @return Collection|Timer[]
      */
-    public function serialize()
+    public function getTimer(): Collection
     {
-        // TODO: Implement serialize() method.
+        return $this->timer;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function unserialize($serialized): void
+    public function addTimer(Timer $timer): self
     {
-        // add $this->salt too if you don't use Bcrypt or Argon2i
-        [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+        if (!$this->timer->contains($timer)) {
+            $this->timer[] = $timer;
+            $timer->setUser($this);
+        }
+
+        return $this;
     }
+
+    public function removeTimer(Timer $timer): self
+    {
+        if ($this->timer->contains($timer)) {
+            $this->timer->removeElement($timer);
+            // set the owning side to null (unless already changed)
+            if ($timer->getUser() === $this) {
+                $timer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
 }
