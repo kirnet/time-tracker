@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% trans %}profile{% endtrans %}{% endblock %}
+{% block body %}
+    <script src="{{ asset('build/js/profile.js') }}"></script>
+    <div class="side-bar">
+        <ul class="list-group">
+            <li class="list-group-item {% if app.request.attributes.get('_route') == 'profile' %}active{% endif %}">
+                <a href="{{ path('profile') }}">{% trans %}counters{% endtrans %}</a>
+            </li>
+            <li class="list-group-item {% if app.request.attributes.get('_route') == 'user_project_list' %}active{% endif %}">
+                <a href="{{ path('user_project_list') }}">{% trans %}projects{% endtrans %}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

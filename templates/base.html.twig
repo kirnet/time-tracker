@@ -3,9 +3,12 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% trans %}Welcome{% endtrans %}!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="/build/css/global.css">
+            {#{{ encore_entry_link_tags('css/global') }}#}
+        {% endblock %}
         {#<link rel="manifest" href="/build/manifest.json">#}
-        <link rel="stylesheet" type="text/css" href="/build/css/global.css">
+        {#<script src="{{ asset('build/js/moment-timer.js') }}"></script>#}
     </head>
     <body>
         {% block header %}
@@ -43,13 +46,12 @@
                                         {% trans %}profile{% endtrans %}
                                     </a>
                                 {% endif %}
-                                <a class="navbar-brand" href="{{ path('logout') }}">
-                                    {% trans %}logout{% endtrans %}
-                                </a>
                             {% endif %}
                         </div>
-
                     </div>
+                    <a class="navbar-brand float-right" href="{{ path('logout') }}">
+                        {% trans %}logout{% endtrans %}
+                    </a>
                 </div>
             </header>
         {% endblock %}

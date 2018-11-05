@@ -71,15 +71,16 @@ class TimerAdmin extends AbstractAdmin
      */
     protected function configureListFields(ListMapper $listMapper)
     {
+        $locale = $this->getRequest()->getLocale();
         $listMapper->addIdentifier('name');
         $listMapper->addIdentifier('project.name');
         $listMapper->addIdentifier('user.email');
         $listMapper->addIdentifier('state');
-        $listMapper->addIdentifier('timer_start');
+        $listMapper->addIdentifier('timer_start', 'datetime');
         $listMapper->addIdentifier('time');
         $listMapper->addIdentifier('created_at', 'datetime',[
             'pattern' => 'dd MMM y G',
-            'locale' => 'fr',
+            'locale' => $locale,
         ]);
     }
 }

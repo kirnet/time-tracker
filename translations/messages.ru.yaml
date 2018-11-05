@@ -1,3 +1,9 @@
 test : Тест
 created_at: Создано
 counters: Счетчики
+projects: Проекты
+Counter name: Название счетчика
+Project: Проект
+State: Статус
+CreatedAt: Создан
+Choose project: Выберите проект

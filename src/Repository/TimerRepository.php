@@ -19,6 +19,25 @@ class TimerRepository extends ServiceEntityRepository
         parent::__construct($registry, Timer::class);
     }
 
+    public function resetStatus($timerId, $userId)
+    {
+        $activeTimers = $this->createQueryBuilder('t')
+            ->andWhere('t.user=' . $userId)
+            ->andWhere("t.state='run'")
+            ->andWhere('t.id!=' . $timerId)
+            ->getQuery()
+            ->getResult()
+        ;
+        $sql = "UPDATE timer SET state='pause'";
+        foreach ($activeTimers as $timer) {
+            $createdAt = $timer->getCreatedAt();
+
+        }
+//        $this->getEntityManager()->createQuery()
+//        var_dump($activeTimers);
+
+    }
+
 //    /**
 //     * @return Timer[] Returns an array of User objects
 //     */

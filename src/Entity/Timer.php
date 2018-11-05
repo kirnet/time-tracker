@@ -12,7 +12,7 @@ class Timer
     const STATE_RUNING = 'run';
     const STATE_PAUSED = 'pause';
     const STATE_STOPPED = 'stop';
-    const STATE_NEW = 'new';
+//    const STATE_NEW = 'new';
 
     /**
      * @ORM\Id()
@@ -39,7 +39,7 @@ class Timer
     /**
      * @ORM\Column(type="integer")
      */
-    private $time;
+    private $time = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="timers")

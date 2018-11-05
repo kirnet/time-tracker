@@ -11,7 +11,6 @@
         "sonata-project/doctrine-orm-admin-bundle": "*",
         "symfony/asset": "*",
         "symfony/console": "*",
-        "symfony/expression-language": "*",
         "symfony/flex": "^1.1",
         "symfony/form": "*",
         "symfony/framework-bundle": "*",
@@ -25,6 +24,7 @@
         "symfony/templating": "*",
         "symfony/twig-bundle": "*",
         "symfony/validator": "*",
+        "symfony/var-dumper": "*",
         "symfony/web-link": "*",
         "symfony/webpack-encore-pack": "*",
         "symfony/yaml": "*"
