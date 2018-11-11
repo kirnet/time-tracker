@@ -7,6 +7,9 @@ parameters:
     locale: 'ru'
 
 services:
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - !service { class: PDO, factory: 'database_connection:getWrappedConnection' }
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
