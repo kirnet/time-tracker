@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d905407c3d05768fe9c2d8c0142e7ebf",
+    "content-hash": "bc29a260fcab7f6760f230a9f73b201a",
     "packages": [
         {
             "name": "cocur/slugify",
@@ -6846,7 +6846,7 @@
         },
         {
             "name": "symfony/phpunit-bridge",
-            "version": "v4.1.6",
+            "version": "v4.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/phpunit-bridge.git",

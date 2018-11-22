@@ -20,7 +20,7 @@ Encore
      */
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/profile', './assets/js/profile.js')
-    //.addEntry('page2', './assets/js/page2.js')
+    .addEntry('js/websocket', './assets/js/websocket.js')
     .addStyleEntry('css/global', './assets/css/global.scss')
 
     /*

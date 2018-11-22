@@ -7,6 +7,7 @@
             <link rel="stylesheet" type="text/css" href="/build/css/global.css">
             {#{{ encore_entry_link_tags('css/global') }}#}
         {% endblock %}
+        <script src="{{ asset('build/js/websocket.js') }}"></script>
         {#<link rel="manifest" href="/build/manifest.json">#}
         {#<script src="{{ asset('build/js/moment-timer.js') }}"></script>#}
     </head>
@@ -49,9 +50,11 @@
                             {% endif %}
                         </div>
                     </div>
-                    <a class="navbar-brand float-right" href="{{ path('logout') }}">
-                        {% trans %}logout{% endtrans %}
-                    </a>
+                    {% if app.user %}
+                        <a class="navbar-brand float-right" href="{{ path('logout') }}">
+                            {% trans %}logout{% endtrans %}
+                        </a>
+                    {% endif %}
                 </div>
             </header>
         {% endblock %}

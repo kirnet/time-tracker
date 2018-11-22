@@ -2,6 +2,7 @@
 
 const moment = require('moment');
 let startTimestamp = moment().startOf('day');
+import ws from 'websocket';
 // const momentTimer = require('moment-timer');
 
 $(function() {
@@ -168,5 +169,5 @@ $(function() {
 
   });
 
-
+console.log(ws);
 }); //Autorun
