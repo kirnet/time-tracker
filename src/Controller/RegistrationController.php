@@ -34,9 +34,9 @@ class RegistrationController extends AbstractController
             $user->setRoles(['ROLE_USER']);
 
 // 4) save the User!
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
 
 // ... do any other work - like sending them an email, etc
 // maybe set a "flash" success message for the user

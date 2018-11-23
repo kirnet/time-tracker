@@ -1,0 +1,5 @@
+{
+    "sonata-project/doctrine-extensions": {
+        "version": "1.1.1"
+    }
+}

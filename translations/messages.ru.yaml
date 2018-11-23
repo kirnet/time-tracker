@@ -1,4 +1,4 @@
-test : Тест
+test: Тест
 created_at: Создано
 counters: Счетчики
 projects: Проекты
@@ -7,3 +7,4 @@ Project: Проект
 State: Статус
 CreatedAt: Создан
 Choose project: Выберите проект
+Counter: Cчетчик
