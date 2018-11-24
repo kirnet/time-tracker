@@ -17,10 +17,10 @@ class ProfileController extends AbstractController
 {
     /** @var PaginatorInterface  */
     private $paginator;
+
     /**
      * ProfileController constructor.
      *
-     * @param Request $request
      * @param PaginatorInterface $paginator
      */
     public function __construct(PaginatorInterface $paginator)
@@ -40,7 +40,7 @@ class ProfileController extends AbstractController
     {
         $userId = $this->getUser()->getId();
         $now = time();
-        $projects = $projectRepository->findAll();
+        $projects = $projectRepository->findByUserId($userId);
         // Find all the data on the Appointments table, filter your query as you need
         $allAppointmentsQuery = $timerRepository->createQueryBuilder('t')
             ->where('t.user = :userId')

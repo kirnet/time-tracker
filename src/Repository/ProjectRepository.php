@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -17,6 +18,16 @@ class ProjectRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Project::class);
+    }
+
+    /**
+     * @param int $userId
+     *
+     * @return Project[]
+     */
+    public function findByUserId(int $userId)
+    {
+        return $this->findBy(['user' => $userId]);
     }
 
 //    /**
