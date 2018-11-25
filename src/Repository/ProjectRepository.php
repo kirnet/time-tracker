@@ -30,6 +30,20 @@ class ProjectRepository extends ServiceEntityRepository
         return $this->findBy(['user' => $userId]);
     }
 
+    /**
+     * @param int $id
+     *
+     * @return Project
+     */
+    public function findOneOrCreateById(int $id)
+    {
+        $project = $this->find($id);
+        if (!$project) {
+            $project = new Project();
+        }
+        return $project;
+    }
+
 //    /**
 //     * @return Project[] Returns an array of Project objects
 //     */

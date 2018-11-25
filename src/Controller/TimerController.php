@@ -83,15 +83,13 @@ class TimerController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
-        if ($id) {
-            $timer = $timerRepository->find($id);
-        } else {
+        $timer = $timerRepository->findOneOrCreateById($id);
+        if ($timer->getId() === null) {
             $timer = new Timer();
             $timer->setTimerStart(new \DateTime());
         }
 
         $timerRepository->resetStatus($id, $user->getId());
-
         if ($projectId) {
             $project = $this->getDoctrine()->getRepository(Project::class)->find($projectId);
             $timer->setProject($project);

@@ -37,12 +37,11 @@ class ProjectController extends AbstractController
     {
         $id = $request->get('id');
         $isAjax = $request->isXmlHttpRequest();
-        if ($id) {
-            $project = $this->projectRepository->find($id);
-        } else {
+        $project = $this->projectRepository->findOneOrCreateById($id);
+
+        if ($project->getId() === null) {
             $project = new Project();
             $project->setUser($this->getUser());
-//            $project->setCreatedAt(new \DateTime());
         }
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);

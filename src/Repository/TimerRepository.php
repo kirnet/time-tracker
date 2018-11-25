@@ -33,9 +33,20 @@ class TimerRepository extends ServiceEntityRepository
             $createdAt = $timer->getCreatedAt();
 
         }
-//        $this->getEntityManager()->createQuery()
-//        var_dump($activeTimers);
+    }
 
+    /**
+     * @param int $id
+     *
+     * @return Timer
+     */
+    public function findOneOrCreateById(int $id)
+    {
+        $timer = $this->find($id);
+        if (!$timer) {
+            $timer = new Timer();
+        }
+        return $timer;
     }
 
 //    /**
