@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
-use App\Entity\Project;
 use App\Repository\ProjectRepository;
 use App\Repository\TimerRepository;
-use Doctrine\ORM\EntityManager;
+use App\Utils\ProjectHelper;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -94,13 +93,7 @@ class ProfileController extends AbstractController
             5
         );
 
-        foreach ($projects as $project) {
-            $counter = 0;
-            foreach ($project->getTimers() as $timer) {
-                $counter += $timer->getTime();
-            }
-            $project->time = $counter;
-        }
+        $projects = ProjectHelper::countTime($projects);
 
         return $this->render('profile/projects.html.twig', [
             'projects' => $projects
