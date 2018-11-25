@@ -44,3 +44,5 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/profile, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/timer, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/project, roles: IS_AUTHENTICATED_FULLY }

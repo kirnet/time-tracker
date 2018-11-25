@@ -62,10 +62,12 @@ class TimerController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="timer_edit", methods="GET|POST")
+     * @Route("/edit/{id}", name="timer_edit", defaults={"id"=0})
      * @param Request $request
+     * @param TimerRepository $timerRepository
      *
-     * @return Response
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function edit(Request $request, TimerRepository $timerRepository): jsonResponse
     {

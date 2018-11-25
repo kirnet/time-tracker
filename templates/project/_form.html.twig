@@ -1,0 +1,6 @@
+{{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+<button class="btn" type="submit">{% trans %}Save{% endtrans %}</button>
+{{ form_end(form) }}

@@ -5,7 +5,9 @@
         <tr>
             <th>Id</th>
             <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Description{% endtrans %}</th>
             <th>{% trans %}CreatedAt{% endtrans %}</th>
+            <th>{% trans %}Total time{% endtrans %}</th>
             <th>actions</th>
         </tr>
         </thead>
@@ -14,10 +16,12 @@
             <tr>
                 <td>{{ project.id }}</td>
                 <td>{{ project.name }}</td>
+                <td>{{ project.description }}</td>
                 <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ project.time }}</td>
                 <td>
-                    <a href="{{ path('timer_show', {'id': project.id}) }}">show</a>
-                    <a href="{{ path('timer_edit', {'id': project.id}) }}">edit</a>
+                    <a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a>
+                    <a href="{{ path('project_delete', {'id': project.id}) }}">Delete</a>
                 </td>
             </tr>
         {% else %}
