@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use phpDocumentor\Reflection\Types\Integer;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -15,9 +15,86 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ProjectRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    const NUM_PER_PAGE = 5;
+
+    /** @var PaginatorInterface */
+    private $paginator;
+
+    /**
+     * ProjectRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     * @param PaginatorInterface $paginator
+     */
+    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Project::class);
+        $this->paginator = $paginator;
+    }
+
+    /**
+     * @param $userId
+     *
+     * @return mixed
+     */
+    public function removeByOwnerId($userId)
+    {
+        $query = $this->getEntityManager()
+            ->createQueryBuilder()
+            ->delete(Project::class, 'p')
+            ->where('p.ownerId = :userId')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+        ;
+        return $query->execute();
+    }
+
+    /**
+     * @param $userId
+     * @param int $page
+     *
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getProjectListByUserId($userId, $page = 1)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+              ->addSelect('t')
+              ->where('u.id = :userId')
+              ->innerJoin('p.users', 'u')
+              ->leftJoin('p.timers', 't')
+              ->setParameter('userId', $userId)
+              ->getQuery()
+        ;
+
+        // Paginate the results of the query
+        $projects = $this->paginator->paginate(
+        // Doctrine Query, not results
+            $queryBuilder,
+            // Define the page parameter
+            $page,
+            // Items per page
+            self::NUM_PER_PAGE
+        );
+        $this->countTotalTime($projects);
+        return $projects;
+    }
+
+    /**
+     * @param $projects
+     *
+     * @return mixed
+     */
+    public function countTotalTime($projects)
+    {
+        foreach ($projects as $project) {
+            $counter = 0;
+            foreach ($project->getTimers() as $timer) {
+                $counter += $timer->getTime();
+            }
+            $project->totalTime = $counter;
+        }
+
+        return $projects;
     }
 
     /**
@@ -25,15 +102,16 @@ class ProjectRepository extends ServiceEntityRepository
      *
      * @return Project[]
      */
-    public function findByUserId(int $userId)
+    public function findByOwnerId(int $userId)
     {
-        return $this->findBy(['user' => $userId]);
+        return $this->findBy(['owner' => $userId]);
     }
 
     /**
      * @param int $id
      *
      * @return Project
+     * @throws \Exception
      */
     public function findOneOrCreateById(int $id)
     {
@@ -43,33 +121,4 @@ class ProjectRepository extends ServiceEntityRepository
         }
         return $project;
     }
-
-//    /**
-//     * @return Project[] Returns an array of Project objects
-//     */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Project
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

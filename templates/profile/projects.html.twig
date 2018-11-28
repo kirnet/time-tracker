@@ -18,7 +18,7 @@
                 <td>{{ project.name }}</td>
                 <td>{{ project.description }}</td>
                 <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ project.time }}</td>
+                <td>{{ project.totalTime }}</td>
                 <td>
                     <a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a>
                     <a href="{{ path('project_delete', {'id': project.id}) }}">Delete</a>

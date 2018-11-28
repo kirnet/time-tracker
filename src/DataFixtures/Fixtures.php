@@ -20,6 +20,8 @@ class Fixtures extends Fixture
 
     /**
      * @param ObjectManager $manager
+     *
+     * @throws \Exception
      */
     public function load(ObjectManager $manager)
     {
@@ -31,7 +33,6 @@ class Fixtures extends Fixture
         $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
         $entity->setRoles(['ROLE_ADMIN']);
         $manager->persist($entity);
-        $manager->flush();
 
         $entity = new User();
         $entity->setEmail('user@user.by');
@@ -41,14 +42,25 @@ class Fixtures extends Fixture
         $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
         $entity->setRoles(['ROLE_USER']);
         $manager->persist($entity);
+
+        for ($i = 0; $i < 100; $i++) {
+            $entity = new User();
+            $entity->setEmail("user{$i}@user.by");
+            $entity->setLogin("user{$i}");
+            $entity->setIsBanned(0);
+            $entity->setRegisterAt(new \DateTime());
+            $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
+            $entity->setRoles(['ROLE_USER']);
+            $manager->persist($entity);
+        }
         $manager->flush();
 
-        $entity = new Project();
-        $entity->setName('Admin project');
-        $entity->setDescription('Description admin project');
-        $entity->setCreatedAt(new \DateTime());
-        $entity->setUser(1);
-        $manager->persist($entity);
-        $manager->flush();
+//        $entity = new Project();
+//        $entity->setName('Admin project');
+//        $entity->setDescription('Description admin project');
+//        $entity->setCreatedAt(new \DateTime());
+//        $entity->setOwner(1);
+//        $manager->persist($entity);
+//        $manager->flush();
     }
 }

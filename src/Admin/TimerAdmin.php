@@ -40,7 +40,6 @@ class TimerAdmin extends AbstractAdmin
 
         $formMapper->add('state', ChoiceType::class, [
             'choices' => [
-                Timer::STATE_NEW => Timer::STATE_NEW,
                 Timer::STATE_PAUSED => Timer::STATE_PAUSED,
                 Timer::STATE_RUNING => Timer::STATE_RUNING,
                 Timer::STATE_STOPPED => Timer::STATE_STOPPED

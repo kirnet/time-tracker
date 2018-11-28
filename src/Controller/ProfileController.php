@@ -2,57 +2,63 @@
 
 namespace App\Controller;
 
+use App\Entity\Project;
+use App\Entity\User;
 use App\Repository\ProjectRepository;
 use App\Repository\TimerRepository;
-use App\Utils\ProjectHelper;
+use App\Repository\UserRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Timer;
-use Doctrine\ORM\Query\Expr\Join;
 
 
 class ProfileController extends AbstractController
 {
     /** @var PaginatorInterface  */
     private $paginator;
+    /** @var UserRepository  */
+    private $userRepository;
 
     /**
      * ProfileController constructor.
      *
      * @param PaginatorInterface $paginator
+     * @param UserRepository $userRepository
      */
-    public function __construct(PaginatorInterface $paginator)
+    public function __construct(PaginatorInterface $paginator, UserRepository $userRepository)
     {
         $this->paginator = $paginator;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @Route("/profile", name="profile")
      * @param Request $request
-     *
      * @param TimerRepository $timerRepository
+     *
+     * @param ProjectRepository $projectRepository
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(Request $request, TimerRepository $timerRepository, ProjectRepository $projectRepository)
     {
-        $userId = $this->getUser()->getId();
+        /** @var User $user */
+        $user = $this->getUser();
+        $projects = $this->userRepository->find($user->getId())->getProjects();
         $now = time();
-        $projects = $projectRepository->findByUserId($userId);
         // Find all the data on the Appointments table, filter your query as you need
-        $allAppointmentsQuery = $timerRepository->createQueryBuilder('t')
+        $queryBuilder = $timerRepository->createQueryBuilder('t')
             ->where('t.user = :userId')
             ->orderBy( 't.timerStart', 'DESC')
-            ->setParameter('userId', $userId)
+            ->setParameter('userId', $user->getId())
             ->getQuery()
         ;
 
         // Paginate the results of the query
         $timers = $this->paginator->paginate(
         // Doctrine Query, not results
-            $allAppointmentsQuery,
+            $queryBuilder,
             // Define the page parameter
             $request->query->getInt('page', 1),
             // Items per page
@@ -76,24 +82,10 @@ class ProfileController extends AbstractController
     public function project(Request $request, ProjectRepository $projectRepository)
     {
         $userId = $this->getUser()->getId();
-        $queryBuilder = $projectRepository->createQueryBuilder('p')
-            ->where('p.user = :userId')
-            ->leftJoin(Timer::class, 't', Join::WITH, 'p.id=t.project')
-            ->setParameter('userId', $userId)
-            ->getQuery()
-        ;
+        $page = $request->query->getInt('page', 1);
+        $projects = $projectRepository->getProjectListByUserId($userId, $page);
 
-        // Paginate the results of the query
-        $projects = $this->paginator->paginate(
-        // Doctrine Query, not results
-            $queryBuilder,
-            // Define the page parameter
-            $request->query->getInt('page', 1),
-            // Items per page
-            5
-        );
-
-        $projects = ProjectHelper::countTime($projects);
+//        $projects = ProjectHelper::countTime($projects);
 
         return $this->render('profile/projects.html.twig', [
             'projects' => $projects

@@ -53,14 +53,14 @@ class User implements UserInterface, Serializable
     private $registerAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="user", orphanRemoval=true)
-     */
-    private $projects;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Timer", mappedBy="user", orphanRemoval=true)
      */
     private $timer;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="users")
+     */
+    private $projects;
 
     /**
      * User constructor.
@@ -128,11 +128,19 @@ class User implements UserInterface, Serializable
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return User
+     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -162,6 +170,11 @@ class User implements UserInterface, Serializable
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     *
+     * @return User
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -180,6 +193,11 @@ class User implements UserInterface, Serializable
         return (string) $this->password;
     }
 
+    /**
+     * @param string $password
+     *
+     * @return User
+     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -224,37 +242,6 @@ class User implements UserInterface, Serializable
     }
 
     /**
-     * @return Collection|Project[]
-     */
-    public function getProjects(): Collection
-    {
-        return $this->projects;
-    }
-
-    public function addProject(Project $project): self
-    {
-        if (!$this->projects->contains($project)) {
-            $this->projects[] = $project;
-            $project->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeProject(Project $project): self
-    {
-        if ($this->projects->contains($project)) {
-            $this->projects->removeElement($project);
-            // set the owning side to null (unless already changed)
-            if ($project->getUser() === $this) {
-                $project->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Timer[]
      */
     public function getTimer(): Collection
@@ -262,6 +249,11 @@ class User implements UserInterface, Serializable
         return $this->timer;
     }
 
+    /**
+     * @param Timer $timer
+     *
+     * @return User
+     */
     public function addTimer(Timer $timer): self
     {
         if (!$this->timer->contains($timer)) {
@@ -272,11 +264,15 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @param Timer $timer
+     *
+     * @return User
+     */
     public function removeTimer(Timer $timer): self
     {
         if ($this->timer->contains($timer)) {
             $this->timer->removeElement($timer);
-            // set the owning side to null (unless already changed)
             if ($timer->getUser() === $this) {
                 $timer->setUser(null);
             }
@@ -285,4 +281,49 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
+    /**
+     * @return Collection|Project[]
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return User
+     */
+    public function addProject(Project $project): self
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects[] = $project;
+            $project->addUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Project $project
+     *
+     * @return User
+     */
+    public function removeProject(Project $project): self
+    {
+        if ($this->projects->contains($project)) {
+            $this->projects->removeElement($project);
+            $project->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->email;
+    }
 }

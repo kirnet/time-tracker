@@ -21,6 +21,11 @@ class ProjectController extends AbstractController
     /** @var ProjectRepository */
     private $projectRepository;
 
+    /**
+     * ProjectController constructor.
+     *
+     * @param ProjectRepository $projectRepository
+     */
     public function __construct(ProjectRepository $projectRepository)
     {
         $this->projectRepository = $projectRepository;
@@ -40,8 +45,7 @@ class ProjectController extends AbstractController
         $project = $this->projectRepository->findOneOrCreateById($id);
 
         if ($project->getId() === null) {
-            $project = new Project();
-            $project->setUser($this->getUser());
+            $project->setOwnerId($this->getUser()->getId());
         }
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
@@ -77,7 +81,7 @@ class ProjectController extends AbstractController
         $project = $this->projectRepository->find($id);
         if ($project) {
             $userId = $this->getUser()->getId();
-            if ($project->getUser()->getId() === $userId) {
+            if ($project->getOwnerId()->getId() === $userId) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($project);
                 $em->flush();

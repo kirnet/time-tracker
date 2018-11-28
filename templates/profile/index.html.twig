@@ -10,6 +10,11 @@
             </li>
             <li class="list-group-item {% if app.request.attributes.get('_route') == 'user_project_list' %}active{% endif %}">
                 <a href="{{ path('user_project_list') }}">{% trans %}projects{% endtrans %}</a>
+                <div class="float-lg-right">
+                    <a href="{{ path('project_edit') }}">
+                        <img src="{{ asset('build/images/plus.png') }}" alt="">
+                    </a>
+                </div>
             </li>
         </ul>
     </div>
