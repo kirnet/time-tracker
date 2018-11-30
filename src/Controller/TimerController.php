@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Entity\Timer;
 use App\Form\TimerType;
+use App\Repository\ProjectRepository;
 use App\Repository\TimerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,6 +25,9 @@ class TimerController extends AbstractController
 {
     /**
      * @Route("/", name="timer_index", methods="GET")
+     * @param TimerRepository $timerRepository
+     *
+     * @return Response
      */
     public function index(TimerRepository $timerRepository): Response
     {
@@ -55,6 +59,9 @@ class TimerController extends AbstractController
 
     /**
      * @Route("/{id}", name="timer_show", methods="GET")
+     * @param Timer $timer
+     *
+     * @return Response
      */
     public function show(Timer $timer): Response
     {
@@ -69,18 +76,17 @@ class TimerController extends AbstractController
      * @return JsonResponse
      * @throws \Exception
      */
-    public function edit(Request $request, TimerRepository $timerRepository): jsonResponse
+    public function edit(Request $request, TimerRepository $timerRepository, ProjectRepository $projectRepository): jsonResponse
     {
 //        if (!$request->isXmlHttpRequest()) {
 //            return new Response('none');
 //        }
-
         $id = $request->get('id', 0);
         $state = $request->get('state');
         $name = $request->get('name');
         $projectId = $request->get('project_id');
 //        $time = $request->get('time');
-        $em = $this->getDoctrine()->getManager();
+//        $em = $this->getDoctrine()->getManager();
         $user = $this->getUser();
 
         $timer = $timerRepository->findOneOrCreateById($id);
@@ -91,14 +97,14 @@ class TimerController extends AbstractController
 
         $timerRepository->resetStatus($id, $user->getId());
         if ($projectId) {
-            $project = $this->getDoctrine()->getRepository(Project::class)->find($projectId);
+            $project = $projectRepository->find($projectId);
             $timer->setProject($project);
         }
         $timer->setName($name);
         $timer->setState($state);
         $timer->setUser($user);
 
-        if ($state === Timer::STATE_RUNING && !$timer->getTimerStart()) {
+        if ($state === Timer::STATE_RUNING) {
             $timer->setTimerStart(new \DateTime());
         }
         else if (in_array($state, [Timer::STATE_PAUSED, Timer::STATE_STOPPED])) {
@@ -106,11 +112,13 @@ class TimerController extends AbstractController
             $startTime = $timer->getTimerStart()->getTimestamp();
             $now = new \DateTime();
             $time = $now->getTimestamp() - $startTime;
+            $time += $timer->getTime();
             $timer->setTime($time);
         }
 
-        $em->persist($timer);
-        $em->flush();
+        $timerRepository->save($timer);
+//        $em->persist($timer);
+//        $em->flush();
         $normalizer = new ObjectNormalizer();
         $normalizer->setCircularReferenceHandler(function ($object) {
             return $object->getId();

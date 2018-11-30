@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -20,16 +21,24 @@ class ProjectRepository extends ServiceEntityRepository
     /** @var PaginatorInterface */
     private $paginator;
 
+    /** @var EntityManagerInterface  */
+    private $entityManager;
+
     /**
      * ProjectRepository constructor.
      *
      * @param RegistryInterface $registry
      * @param PaginatorInterface $paginator
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(RegistryInterface $registry, PaginatorInterface $paginator)
-    {
+    public function __construct(
+        RegistryInterface $registry,
+        PaginatorInterface $paginator,
+        EntityManagerInterface $entityManager
+    ) {
         parent::__construct($registry, Project::class);
-        $this->paginator = $paginator;
+        $this->paginator     = $paginator;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -120,5 +129,15 @@ class ProjectRepository extends ServiceEntityRepository
             $project = new Project();
         }
         return $project;
+    }
+
+    /**
+     * @param Project $project
+     *
+     */
+    public function save(Project $project): void
+    {
+        $this->entityManager->persist($project);
+        $this->entityManager->flush();
     }
 }

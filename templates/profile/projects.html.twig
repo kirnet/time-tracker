@@ -20,8 +20,10 @@
                 <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ project.totalTime }}</td>
                 <td>
-                    <a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a>
-                    <a href="{{ path('project_delete', {'id': project.id}) }}">Delete</a>
+                    {% if app.user.id == project.ownerId %}
+                        <a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a>
+                        <a href="{{ path('project_delete', {'id': project.id}) }}">Delete</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-
-use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
+use http\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -46,13 +46,15 @@ class ProjectController extends AbstractController
 
         if ($project->getId() === null) {
             $project->setOwnerId($this->getUser()->getId());
+        } else {
+            if ($project->getOwnerId() != $this->getUser()->getId()) {
+                throw new NotFoundHttpException();
+            }
         }
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($project);
-            $em->flush();
+            $this->projectRepository->save($project);
             if ($isAjax) {
                 return new JsonResponse($project);
             }

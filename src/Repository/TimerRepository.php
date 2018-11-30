@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Timer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -14,9 +15,19 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class TimerRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    /** @var EntityManagerInterface  */
+    private $entityManager;
+
+    /**
+     * TimerRepository constructor.
+     *
+     * @param RegistryInterface $registry
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Timer::class);
+        $this->entityManager = $entityManager;
     }
 
     public function resetStatus($timerId, $userId)
@@ -49,32 +60,12 @@ class TimerRepository extends ServiceEntityRepository
         return $timer;
     }
 
-//    /**
-//     * @return Timer[] Returns an array of User objects
-//     */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @param Timer $timer
+     */
+    public function save(Timer $timer): void
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        $this->entityManager->persist($timer);
+        $this->entityManager->flush();
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?User
-    {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
