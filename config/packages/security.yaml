@@ -13,6 +13,11 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
+        api:
+            pattern: ^/api
+            guard:
+                authenticators:
+                    - App\Security\TokenAuthenticator
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -32,7 +37,6 @@ security:
 #                default_target_path: /profile
                 username_parameter: email
                 password_parameter: password
-
             logout:
                 path: logout
             guard:

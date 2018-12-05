@@ -7,9 +7,14 @@
             <link rel="stylesheet" type="text/css" href="/build/css/global.css">
             {#{{ encore_entry_link_tags('css/global') }}#}
         {% endblock %}
-        <script src="{{ asset('build/js/websocket.js') }}"></script>
+        {#<script src="{{ asset('build/js/websocket.js') }}"></script>#}
         {#<link rel="manifest" href="/build/manifest.json">#}
         {#<script src="{{ asset('build/js/moment-timer.js') }}"></script>#}
+        <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
+        <script src="{{ asset('bundles/goswebsocket/js/gos_web_socket_client.js') }}"></script>
+        <script type="text/javascript">
+          const _WS_URI = "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}";
+        </script>
     </head>
     <body>
         {% block header %}

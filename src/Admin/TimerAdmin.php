@@ -47,11 +47,7 @@ class TimerAdmin extends AbstractAdmin
         ]);
         $formMapper->add('created_at', DateTimeType::class);
         $formMapper->add('name', TextType::class);
-        $formMapper->add('time', IntegerType::class, [
-            'attr' => ['value' => 0]
-        ]);
-
-
+        $formMapper->add('time', IntegerType::class);
     }
 
 

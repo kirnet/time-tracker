@@ -1,4 +1,52 @@
 {
+    "cboden/ratchet": {
+        "version": "v0.4.1"
+    },
+    "evenement/evenement": {
+        "version": "v3.0.1"
+    },
+    "gos/pnctl-event-loop-emitter": {
+        "version": "v0.1.7"
+    },
+    "gos/pubsub-router-bundle": {
+        "version": "v0.3.5"
+    },
+    "gos/web-socket-bundle": {
+        "version": "v1.8.13"
+    },
+    "gos/websocket-client": {
+        "version": "v0.1.2"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.4.2"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
+    "ratchet/rfc6455": {
+        "version": "0.2.4"
+    },
+    "react/cache": {
+        "version": "v0.5.0"
+    },
+    "react/dns": {
+        "version": "v0.4.16"
+    },
+    "react/event-loop": {
+        "version": "v0.5.3"
+    },
+    "react/promise": {
+        "version": "v2.7.0"
+    },
+    "react/promise-timer": {
+        "version": "v1.5.0"
+    },
+    "react/socket": {
+        "version": "v1.1.0"
+    },
+    "react/stream": {
+        "version": "v1.0.0"
+    },
     "sonata-project/doctrine-extensions": {
         "version": "1.1.1"
     }

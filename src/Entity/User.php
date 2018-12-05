@@ -63,6 +63,11 @@ class User implements UserInterface, Serializable
     private $projects;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true, unique=true)
+     */
+    private $apiToken;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -325,5 +330,17 @@ class User implements UserInterface, Serializable
     public function __toString(): string
     {
         return $this->email;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(?string $apiToken): self
+    {
+        $this->apiToken = $apiToken;
+
+        return $this;
     }
 }
