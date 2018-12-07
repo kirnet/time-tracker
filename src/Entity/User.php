@@ -69,6 +69,7 @@ class User implements UserInterface, Serializable
 
     /**
      * User constructor.
+     * @throws \Exception
      */
     public function __construct()
     {

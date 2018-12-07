@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Project;
 use App\Entity\Timer;
 use App\Form\TimerType;
 use App\Repository\ProjectRepository;
@@ -15,7 +14,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @Route("/timer")

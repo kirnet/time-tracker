@@ -32,7 +32,7 @@ class ProjectController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="project_edit",  defaults={"id"=0})
+     * @Route("/edit/{id<\d+>}", name="project_edit",  defaults={"id"=0})
      * @param Request $request
      *
      * @return string|JsonResponse|RedirectResponse|Response
@@ -62,7 +62,6 @@ class ProjectController extends AbstractController
 
         }
         $viewData = [
-            'isAjax' => $isAjax,
             'form' => $form->createView()
         ];
         if ($isAjax) {

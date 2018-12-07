@@ -1,7 +1,9 @@
-{{ form_start(form) }}
+<div class="container">
+    {{ form_start(form) }}
     {{ form_errors(form) }}
     {{ form_row(form.name) }}
     {{ form_row(form.description) }}
-    {{ form_row(form.users) }}
-    <button class="btn" type="submit">{% trans %}Save{% endtrans %}</button>
-{{ form_end(form) }}
+    {{ form_row(form.users, { 'attr': {'class': 'form-control'} }) }}
+    <button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+    {{ form_end(form) }}
+</div>

@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -26,6 +26,7 @@ class DefaultController extends AbstractController
      */
     public function index(Request $request, TranslatorInterface $translator)
     {
+//        throw new NotFoundHttpException();
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
         ]);

@@ -36,18 +36,21 @@ class ProjectType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false
             ])
-            ->add('users', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'email',
-                'multiple' => true,
-                'label' => 'Employees',
-                'required' => false
+//            ->add('users', EntityType::class, [
+//                'class' => User::class,
+//                'choice_label' => 'email',
+//                'multiple' => true,
+//                'label' => 'Employees',
+//                'required' => false
+//            ])
+            ->add('users', UsersInputType::class, [
+                'label' => 'Employers',
+                'required' => false,
             ])
         ;
 
         $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
             $data = $event->getData();
-
 
             $event->setData($data);
         });

@@ -12,6 +12,8 @@
   "author": "kirnet@tut.by",
   "license": "ISC",
   "dependencies": {
+    "bloodhound-js": "^1.2.3",
+    "chosen-js": "^1.8.7",
     "moment": "^2.22.2",
     "reconnecting-websocket": "^4.1.10"
   },
