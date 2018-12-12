@@ -1,0 +1,10 @@
+{% extends 'profile/index.html.twig' %}
+
+{% block content %}
+    <div class="container">
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.login) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

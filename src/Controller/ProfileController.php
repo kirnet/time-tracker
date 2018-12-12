@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Project;
 use App\Entity\User;
+use App\Form\UserType;
 use App\Repository\ProjectRepository;
 use App\Repository\TimerRepository;
 use App\Repository\UserRepository;
@@ -89,6 +90,27 @@ class ProfileController extends AbstractController
 
         return $this->render('profile/projects.html.twig', [
             'projects' => $projects
+        ]);
+    }
+
+    /**
+     * @Route("/profile/settings", name="user_settings")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function settings(Request $request)
+    {
+        $user = $this->userRepository->find($this->getUser()->getId());
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
+        return $this->render('profile/settings.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }
