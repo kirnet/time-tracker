@@ -4,6 +4,6 @@
     {{ form_row(form.name) }}
     {{ form_row(form.description) }}
     {{ form_row(form.users, { 'attr': {'class': 'form-control'} }) }}
-    <button class="btn btn-primary" type="submit">{% trans %}Save{% endtrans %}</button>
+    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
     {{ form_end(form) }}
 </div>

@@ -44,16 +44,16 @@ class ProjectType extends AbstractType
 //                'required' => false
 //            ])
             ->add('users', UsersInputType::class, [
-                'label' => 'Employers',
+                'label' => 'Employees',
                 'required' => false,
             ])
         ;
-
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
-            $data = $event->getData();
-
-            $event->setData($data);
-        });
+//
+//        $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
+//            $data = $event->getData();
+//
+//            $event->setData($data);
+//        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
             $data = $event->getData();

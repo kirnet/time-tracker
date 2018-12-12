@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User implements UserInterface, Serializable
+class User implements UserInterface, Serializable, \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -343,5 +343,17 @@ class User implements UserInterface, Serializable
         $this->apiToken = $apiToken;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize(): string
+    {
+        // This entity implements JsonSerializable (http://php.net/manual/en/class.jsonserializable.php)
+        // so this method is used to customize its JSON representation when json_encode()
+        // is called, for example in tags|json_encode (app/Resources/views/form/fields.html.twig)
+
+        return $this->email;
     }
 }

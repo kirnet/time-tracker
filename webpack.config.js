@@ -20,6 +20,7 @@ Encore
      */
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/profile', './assets/js/profile.js')
+    .addEntry('js/project_edit', './assets/js/project_edit.js')
     .addEntry('js/websocket', './assets/js/websocket.js')
     .addStyleEntry('css/global', './assets/css/global.scss')
 

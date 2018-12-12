@@ -24,4 +24,5 @@ return [
     Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
     Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle::class => ['all' => true],
     Gos\Bundle\WebSocketBundle\GosWebSocketBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

@@ -49,5 +49,14 @@
     },
     "sonata-project/doctrine-extensions": {
         "version": "1.1.1"
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "9aea6366d216792824dc4985fc56617fabdaf82b"
+        }
     }
 }

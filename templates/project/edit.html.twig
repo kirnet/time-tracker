@@ -1,5 +1,11 @@
 {% extends 'base.html.twig' %}
-{% block title %} {% trans %}Edit project{% endtrans %}{% endblock %}
+
+{% block title %} {{ 'Edit project'|trans }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('build/js/project_edit.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     {% include 'project/_form.html.twig' %}
