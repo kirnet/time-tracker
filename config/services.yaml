@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'ru'
+    pathProjectLogo: '%kernel.project_dir%/public/uploads/project_logo'
+    projectLogoWidth: 50
+    projectLogoHeight: 50
 
 services:
     session.handler.pdo:

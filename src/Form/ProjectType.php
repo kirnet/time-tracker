@@ -3,10 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Project;
-use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -36,24 +35,15 @@ class ProjectType extends AbstractType
             ->add('description', TextareaType::class, [
                 'required' => false
             ])
-//            ->add('users', EntityType::class, [
-//                'class' => User::class,
-//                'choice_label' => 'email',
-//                'multiple' => true,
-//                'label' => 'Employees',
-//                'required' => false
-//            ])
             ->add('users', UsersInputType::class, [
                 'label' => 'Employees',
                 'required' => false,
             ])
+            ->add('logo', FileType::class, [
+                'required' => false,
+                'data_class' => null
+            ])
         ;
-//
-//        $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
-//            $data = $event->getData();
-//
-//            $event->setData($data);
-//        });
 
         $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
             $data = $event->getData();

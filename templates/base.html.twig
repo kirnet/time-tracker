@@ -10,6 +10,7 @@
         {#<script src="{{ asset('build/js/websocket.js') }}"></script>#}
         {#<link rel="manifest" href="/build/manifest.json">#}
         {#<script src="{{ asset('build/js/moment-timer.js') }}"></script>#}
+        <script src="{{ asset('build/js/app.js') }}"></script>
         <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
         <script src="{{ asset('bundles/goswebsocket/js/gos_web_socket_client.js') }}"></script>
         <script type="text/javascript">
@@ -54,14 +55,24 @@
                                 {% endif %}
                             {% endif %}
                         </div>
+                        {% if app.user %}
+                            <a class="navbar-brand float-right" href="{{ path('logout') }}">
+                                {% trans %}logout{% endtrans %}
+                            </a>
+                        {% endif %}
                     </div>
-                    {% if app.user %}
-                        <a class="navbar-brand float-right" href="{{ path('logout') }}">
-                            {% trans %}logout{% endtrans %}
-                        </a>
-                    {% endif %}
                 </div>
             </header>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </div>
         {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}

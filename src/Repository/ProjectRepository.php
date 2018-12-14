@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class ProjectRepository extends ServiceEntityRepository
 {
-    const NUM_PER_PAGE = 5;
+    const NUM_PER_PAGE = 25;
 
     /** @var PaginatorInterface */
     private $paginator;

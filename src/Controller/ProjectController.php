@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
-use http\Exception;
+use App\Utils\ImageFile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +43,7 @@ class ProjectController extends AbstractController
         $id = $request->get('id');
         $isAjax = $request->isXmlHttpRequest();
         $project = $this->projectRepository->findOneOrCreateById($id);
-
+        $logo = $project->getLogo();
         if ($project->getId() === null) {
             $project->setOwnerId($this->getUser()->getId());
         } else {
@@ -54,12 +54,30 @@ class ProjectController extends AbstractController
         $form = $this->createForm(ProjectType::class, $project);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('logo')->getData();
+            $path = $this->getParameter('pathProjectLogo');
+            if ($file) {
+                $width = $this->getParameter('projectLogoWidth');
+                $height = $this->getParameter('projectLogoHeight');
+                $fileName = ImageFile::upload($file, $path);
+                if ($logo) {
+                    ImageFile::deleteFile($path . '/' . $logo);
+                }
+                ImageFile::createThumb("{$path}/{$fileName}", $width, $height);
+                $project->setLogo($fileName);
+            } elseif ($logo) {
+                $deleteLogo = $request->get('delete_logo');
+                if ($deleteLogo) {
+                    ImageFile::deleteFile("{$path}/{$logo}");
+                } else {
+                    $project->setLogo($logo);
+                }
+            }
             $this->projectRepository->save($project);
             if ($isAjax) {
                 return new JsonResponse($project);
             }
             return $this->redirectToRoute('user_project_list');
-
         }
         $viewData = [
             'form' => $form->createView()
@@ -82,7 +100,7 @@ class ProjectController extends AbstractController
         $project = $this->projectRepository->find($id);
         if ($project) {
             $userId = $this->getUser()->getId();
-            if ($project->getOwnerId()->getId() === $userId) {
+            if ($project->getOwnerId() === $userId) {
                 $em = $this->getDoctrine()->getManager();
                 $em->remove($project);
                 $em->flush();

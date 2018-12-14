@@ -1,11 +1,12 @@
 {% extends 'profile/index.html.twig' %}
 {% block content %}
-    <table class="table">
+    <table class="table list">
         <thead>
         <tr>
             <th>Id</th>
-            <th>{% trans %}Name{% endtrans %}</th>
-            <th>{% trans %}Description{% endtrans %}</th>
+            <th>{{ 'Logo'|trans }}</th>
+            <th>{{ 'Name'|trans }}</th>
+            <th>{{ 'Description'|trans }}</th>
             <th>{% trans %}CreatedAt{% endtrans %}</th>
             <th>{% trans %}Total time{% endtrans %}</th>
             <th>actions</th>
@@ -15,6 +16,11 @@
         {% for project in projects %}
             <tr>
                 <td>{{ project.id }}</td>
+                <td>
+                    {% if project.logo %}
+                        <img src="/uploads/project_logo/thumbs/{{ project.logo }}" alt="logo" style="height:40px">
+                    {% endif %}
+                </td>
                 <td>{{ project.name }}</td>
                 <td>{{ project.description }}</td>
                 <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>

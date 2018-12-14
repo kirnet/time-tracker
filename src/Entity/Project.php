@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
@@ -48,6 +48,12 @@ class Project
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="projects")
      */
     private $users;
+
+    /**
+     * @Assert\File(mimeTypes={ "image/png", "image/jpg", "image/gif", "image/jpeg" })
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $logo;
 
     /**
      * Project constructor.
@@ -221,6 +227,18 @@ class Project
         if ($this->users->contains($user)) {
             $this->users->removeElement($user);
         }
+
+        return $this;
+    }
+
+    public function getLogo(): ?string
+    {
+        return $this->logo;
+    }
+
+    public function setLogo(?string $logo): self
+    {
+        $this->logo = $logo;
 
         return $this;
     }

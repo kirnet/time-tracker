@@ -2,6 +2,7 @@ $primary: darken(#428bca, 20%);
 
 @import "~bootstrap/scss/bootstrap";
 @import "bootstrap-tagsinput.scss";
+@import "~font-awesome/scss/font-awesome.scss";
 
 .side-bar {
   width: 300px;
@@ -65,4 +66,10 @@ table.vertical-middle td {
 
 table.vertical-middle tbody tr:hover {
   background: #d3d9df;
+}
+
+table.list td {
+  padding: 2px;
+  height: 50px;
+  vertical-align: middle;
 }

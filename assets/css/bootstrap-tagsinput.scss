@@ -48,7 +48,7 @@
   margin: 0;
 }
 .tt-suggestion.tt-selectable:before {
-  content: '\f02b';
+  //content: '\f02b';
   font-family: 'FontAwesome';
   display: inline-block;
   font-size: 15px;
@@ -169,4 +169,26 @@
 .bootstrap-tagsinput .tag [data-role="remove"]:hover {
   opacity: 1;
   filter: alpha(opacity=100);
+}
+.bootstrap-tagsinput .tag:before {
+  //content: '\f02b';
+  font-family: 'FontAwesome';
+  display: inline-block;
+  font-size: 15px;
+  margin-right: 0.5em;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  content: '\f00d';
+  font-family: 'FontAwesome';
+  display: block;
+  font-size: 13px;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.fa-tags:before {
+  content: "" !important;
 }
