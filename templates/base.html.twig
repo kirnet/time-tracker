@@ -42,6 +42,13 @@
                                     </li>
                                 {% endif %}
                             {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('sonata_admin_redirect') }}">
+                                        {{ 'Admin'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
                         </ul>
                         <div class="float-right">
                         <ul class="navbar-nav mr-auto">
