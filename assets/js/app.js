@@ -7,16 +7,11 @@
 
 // any CSS you require will output into a single css file (app.css in this case)
 // require('../css/app.css');
-import 'bootstrap-sass/assets/javascripts/bootstrap/transition.js';
-import 'bootstrap-sass/assets/javascripts/bootstrap/alert.js';
-import 'bootstrap-sass/assets/javascripts/bootstrap/collapse.js';
-import 'bootstrap-sass/assets/javascripts/bootstrap/dropdown.js';
-import 'bootstrap-sass/assets/javascripts/bootstrap/modal.js';
-// import 'jquery'
+
+import 'bootstrap/js/src/dropdown.js';
+//import 'jquery'
 
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
-
-console.log($);
-console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
+//console.log('Hello Webpack Encore! Edit me in assets/js/app.js');
