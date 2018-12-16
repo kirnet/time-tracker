@@ -4,10 +4,8 @@
         <meta charset="UTF-8">
         <title>{% block title %}{% trans %}Welcome{% endtrans %}!{% endblock %}</title>
         {% block stylesheets %}
-            <link rel="stylesheet" type="text/css" href="/build/css/global.css">
-            {#{{ encore_entry_link_tags('css/global') }}#}
+            <link rel="stylesheet" type="text/css" href="{{ asset('build/css/global.css') }}">
         {% endblock %}
-        {#<script src="{{ asset('build/js/websocket.js') }}"></script>#}
         {#<link rel="manifest" href="/build/manifest.json">#}
         {#<script src="{{ asset('build/js/moment-timer.js') }}"></script>#}
         <script src="{{ asset('build/js/app.js') }}"></script>

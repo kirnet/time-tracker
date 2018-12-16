@@ -171,10 +171,10 @@ $(function() {
   let myWs = WS.connect(_WS_URI);
   myWs.on("socket/connect", function (session) {
     //session is an Autobahn JS WAMP session.
-    session.subscribe("acme/channel", function (uri, payload) {
+    session.subscribe("kirnet/channel", function (uri, payload) {
       console.log("Received message", payload.msg);
     });
-    session.publish("acme/channel", "This is a message!");
+    session.publish("kirnet/channel", "This is a message!");
     console.log("Successfully Connected!");
   });
 

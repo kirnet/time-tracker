@@ -41,6 +41,6 @@ class Websocket implements RpcInterface
      */
     public function getName()
     {
-        return 'acme.rpc';
+        return 'gos_web_socket.rpc';
     }
 }
