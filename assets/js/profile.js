@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 let startTimestamp = moment().startOf('day');
-// import ws from 'websocket';
+//import ws from 'websocket';
 // const momentTimer = require('moment-timer');
 
 $(function() {
@@ -168,17 +168,41 @@ $(function() {
     timerEdit(false, mainAction.data('timer_id'), mainAction.data('state'));
 
   });
-  let myWs = WS.connect(_WS_URI);
-  myWs.on("socket/connect", function (session) {
-    //session is an Autobahn JS WAMP session.
-    session.subscribe("kirnet/channel", function (uri, payload) {
+
+  let websocket = WS.connect(_WS_URI);
+
+  websocket.on("socket/connect", function (session) {
+
+    console.log('Connect');
+
+    session.subscribe("info/channel", function (uri, payload) {
       console.log("Received message", payload.msg);
     });
-    session.publish("kirnet/channel", "This is a message!");
-    console.log("Successfully Connected!");
+
+    session.call("sample/sum", {"term1": 2, "term2": 5}).then(
+      function (result) {
+        console.log("RPC Valid!", result);
+      },
+      function (error, desc) {
+        console.log("RPC Error", error, desc);
+      }
+    );
+
+    session.publish("info/channel", {msg: "This is a message!"});
+
+    session.publish("info/channel", {msg: "I'm leaving, I will not see the next message"});
+
+    session.unsubscribe("info/channel");
+
+    session.publish("info/channel", {msg: "I won't see this"});
+
+    session.subscribe("info/channel", function (uri, payload) {
+      console.log("Received message", payload.msg);
+    });
+    session.publish("info/channel", {msg: "I'm back!"});
   });
 
-  myWs.on("socket/disconnect", function (error) {
+  websocket.on("socket/disconnect", function (error) {
     //error provides us with some insight into the disconnection: error.reason and error.code
 
     console.log("Disconnected for " + error.reason + " with code " + error.code);

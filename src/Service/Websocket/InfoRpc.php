@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Websocket;
 
 use Psr\Log\LoggerInterface;
 use Ratchet\ConnectionInterface;
 use Gos\Bundle\WebSocketBundle\RPC\RpcInterface;
 use Gos\Bundle\WebSocketBundle\Router\WampRequest;
 
-class Websocket implements RpcInterface
+class InfoRpc implements RpcInterface
 {
     /** @var LoggerInterface  */
     private $logger;
@@ -28,11 +28,16 @@ class Websocket implements RpcInterface
      *
      * @return array
      */
-    public function addFunc(ConnectionInterface $connection, WampRequest $request, $params)
+    public function sum(ConnectionInterface $connection, WampRequest $request, $params)
     {
-        $this->logger->info('fffffffffffff');
+        $this->logger->info(json_encode($params));
         return ["result" => array_sum($params)];
     }
+
+//    public function addFunc(ConnectionInterface $connection, WampRequest $request, $params)
+//    {
+//        return ["result" => array_sum($params)];
+//    }
 
     /**
      * Name of RPC, use for pubsub router (see step3)
@@ -41,6 +46,6 @@ class Websocket implements RpcInterface
      */
     public function getName()
     {
-        return 'gos_web_socket.rpc';
+        return 'info.rpc';
     }
 }

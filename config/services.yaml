@@ -14,7 +14,7 @@ services:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
         arguments:
             - !service { class: PDO, factory: 'database_connection:getWrappedConnection' }
-            - { lock_mode: 1 }
+            - { lock_mode: 0 }
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -38,10 +38,20 @@ services:
     App\EventListener\UserListener:
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+
+    App\Service\Websocket\InfoTopic:
+        tags:
+            - { name: gos_web_socket.topic }
+
     rpc_sample_service:
-        class: App\Service\Websocket
+        class: App\Service\Websocket\InfoRpc
         tags:
             - { name: gos_web_socket.rpc }
+
+#    App\Websocket\InfoRpc:
+#        tags:
+#            - { name: gos_web_socket.rpc }
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
     admin.project:
