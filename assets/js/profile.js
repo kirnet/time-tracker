@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 let startTimestamp = moment().startOf('day');
-//import ws from 'websocket';
+const channel = 'info/channel';
 // const momentTimer = require('moment-timer');
 
 $(function() {
@@ -169,37 +169,40 @@ $(function() {
 
   });
 
-  let websocket = WS.connect(_WS_URI);
+  let websocket = WS.connect(T.wsUri);
 
   websocket.on("socket/connect", function (session) {
 
+    $('#websock').off().on('click', function() {
+      session.publish(channel, {msg: 'send by click'});
+      return false;
+    });
+
     console.log('Connect');
 
-    session.subscribe("info/channel", function (uri, payload) {
+    session.subscribe(channel, function (uri, payload) {
       console.log("Received message", payload.msg);
     });
 
-    session.call("sample/sum", {"term1": 2, "term2": 5}).then(
-      function (result) {
-        console.log("RPC Valid!", result);
-      },
-      function (error, desc) {
-        console.log("RPC Error", error, desc);
-      }
-    );
+    // session.call("sample/sum", {"term1": 2, "term2": 5}).then(
+    //   function (result) {
+    //     console.log("RPC Valid!", result);
+    //   },
+    //   function (error, desc) {
+    //     console.log("RPC Error", error, desc);
+    //   }
+    // );
 
-    session.publish("info/channel", {msg: "This is a message!"});
+    session.publish(channel, {msg: "This is a message!"});
 
-    session.publish("info/channel", {msg: "I'm leaving, I will not see the next message"});
+    //session.unsubscribe(channel);
 
-    session.unsubscribe("info/channel");
+    //session.publish(channel, {msg: "I won't see this"});
 
-    session.publish("info/channel", {msg: "I won't see this"});
-
-    session.subscribe("info/channel", function (uri, payload) {
+    session.subscribe(channel, function (uri, payload) {
       console.log("Received message", payload.msg);
     });
-    session.publish("info/channel", {msg: "I'm back!"});
+    session.publish(channel, {msg: "I'm back!"});
   });
 
   websocket.on("socket/disconnect", function (error) {

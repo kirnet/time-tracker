@@ -38,6 +38,7 @@ services:
     App\EventListener\UserListener:
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+    Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface: '@gos_web_socket.websocket.client_manipulator'
 
     App\Service\Websocket\InfoTopic:
         tags:

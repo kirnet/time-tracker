@@ -7,7 +7,7 @@ gos_web_socket:
                 - '%kernel.project_dir%/src/Resources/websocket_routing.yaml'
     shared_config: true
     client:
-        firewall: secured_area
-        session_handler: '@session.handler.pdo'
+        firewall: main
+        session_handler: session.handler.pdo
     rpc:
         - '@rpc_sample_service'

@@ -2,6 +2,7 @@
 
 namespace App\Service\Websocket;
 
+use Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface;
 use Gos\Bundle\WebSocketBundle\Topic\TopicInterface;
 use Psr\Log\LoggerInterface;
 use Ratchet\ConnectionInterface;
@@ -13,9 +14,15 @@ class InfoTopic implements TopicInterface
     /** @var LoggerInterface  */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /**
+     * @var ClientManipulatorInterface
+     */
+    protected $clientManipulator;
+
+    public function __construct(LoggerInterface $logger, ClientManipulatorInterface $clientManipulator)
     {
         $this->logger = $logger;
+        $this->clientManipulator = $clientManipulator;
     }
 
     /**
@@ -28,9 +35,19 @@ class InfoTopic implements TopicInterface
      */
     public function onSubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request)
     {
-        $this->logger->info('onSubscribeXXXXXXXXXXXXXXXXX');
+
+        $username = $this->clientManipulator->getClient($connection)->getUsername();
+        $userConnection = $this->clientManipulator->findByUsername($topic, $username);
+
+        //$this->logger->info('socket user' . json_encode($user));
         //this will broadcast the message to ALL subscribers of this topic.
-        $topic->broadcast(['msg' => $connection->resourceId . " has joined " . $topic->getId()]);
+        if ($userConnection !== false && $username == $userConnection['client']->getEmail()) {
+            $topic->broadcast(
+                ['msg' => $connection->resourceId . "{$username} has joined " . $topic->getId()],
+                [],
+                [$userConnection['connection']->WAMP->sessionId]
+            );
+        }
     }
 
     /**
@@ -68,10 +85,22 @@ class InfoTopic implements TopicInterface
             if ($topic->getId() == "acme/channel/shout")
                //shout something to all subs.
         */
+        $username = $this->clientManipulator->getClient($connection)->getUsername();
+        $subscribers = $this->clientManipulator->getAll($topic);
+        $eligible = [];
+        foreach ($subscribers as $subscriber) {
+            if ($username === $subscriber['client']->getEmail()) {
+                $eligible[] = $subscriber['connection']->WAMP->sessionId;
+            }
+        }
 
-        $topic->broadcast([
-            'msg' => $event
-        ]);
+        $topic->broadcast(
+            [
+                'msg' => $event
+            ],
+            [],
+            $eligible
+        );
     }
 
     /**

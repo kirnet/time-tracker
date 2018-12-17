@@ -30,14 +30,13 @@ class InfoRpc implements RpcInterface
      */
     public function sum(ConnectionInterface $connection, WampRequest $request, $params)
     {
-        $this->logger->info(json_encode($params));
         return ["result" => array_sum($params)];
     }
 
-//    public function addFunc(ConnectionInterface $connection, WampRequest $request, $params)
-//    {
-//        return ["result" => array_sum($params)];
-//    }
+    public function test(ConnectionInterface $connection, WampRequest $request, $params)
+    {
+        return ["result" => array_sum($params)];
+    }
 
     /**
      * Name of RPC, use for pubsub router (see step3)
