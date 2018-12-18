@@ -1,17 +1,17 @@
 'use strict';
 
 const moment = require('moment');
-let startTimestamp = moment().startOf('day');
 const channel = 'info/channel';
-// const momentTimer = require('moment-timer');
+let startTimestamp = moment().startOf('day');
 
 $(function() {
   let timerInterval;
   let mainCounter = $('#main_counter');
   let mainAction = $('#main_button_action');
   let time = 0;
+  let wsSend;
 
-  $(document).on('click', '.timer_action', function() {
+  $(document).on('click', '.timer_action', function(e) {
     let button = $(this);
     let counterId = button.data('timer_id');
     let oldState = button.data('state');
@@ -28,6 +28,10 @@ $(function() {
     toggleTimer(button, time);
     toggleStopButton(button.next('img.timer_stop'), state);
     toggleImageButton(button, state);
+
+    if (!e.which) {
+      return;
+    }
 
     timerEdit(button, counterId, state);
   });
@@ -117,23 +121,31 @@ $(function() {
   }
 
   function timerEdit(button, counterId, state) {
-    $.ajax({
-      url: '/timer/edit/' + (counterId || 0),
-      type: 'POST',
-      dataType: 'json',
-      data: {
-        state: state,
-        name: $('#name_counter').val(),
-        project_id: $('#counter_project').val(),
-        time: startTimestamp.seconds()
-      },
-      success: function(data) {
-        if (data.id && button) {
-          button.data('timer_id', data.id)
+    counterId = counterId || 0;
+    let data = {
+      state: state,
+      name: $('#name_counter').val(),
+      projectId: $('#counter_project').val(),
+      time: startTimestamp.seconds(),
+    };
+
+    if (typeof wsSend === 'function') {
+      data.id = counterId;
+      wsSend(data, button);
+    } else {
+      $.ajax({
+        url: '/timer/edit/' + (counterId),
+        type: 'POST',
+        dataType: 'json',
+        data: data,
+        success: function(data) {
+          if (data.id && button) {
+            button.data('timer_id', data.id)
+          }
+          console.log(data);
         }
-        console.log(data);
-      }
-    });
+      });
+    }
   }
 
   $('td.counter_state').each(function() {
@@ -173,6 +185,21 @@ $(function() {
 
   websocket.on("socket/connect", function (session) {
 
+    wsSend = function(data, button) {
+      session.call('sample/timerEdit', data).then(
+        function (result) {
+          if (result.id && button) {
+            button.data('timer_id', data.id)
+          }
+
+          console.log("RPC Valid!", result);
+        },
+        function (error, desc) {
+          console.log("RPC Error", error, desc);
+        }
+      );
+    };
+
     $('#websock').off().on('click', function() {
       session.publish(channel, {msg: 'send by click'});
       return false;
@@ -199,15 +226,11 @@ $(function() {
 
     //session.publish(channel, {msg: "I won't see this"});
 
-    session.subscribe(channel, function (uri, payload) {
-      console.log("Received message", payload.msg);
-    });
-    session.publish(channel, {msg: "I'm back!"});
-  });
+  }); //websocket connect;
 
   websocket.on("socket/disconnect", function (error) {
     //error provides us with some insight into the disconnection: error.reason and error.code
-
+    wsSend = null;
     console.log("Disconnected for " + error.reason + " with code " + error.code);
   });
 

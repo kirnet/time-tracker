@@ -18,6 +18,7 @@ class ProfileController extends AbstractController
 {
     /** @var PaginatorInterface  */
     private $paginator;
+
     /** @var UserRepository  */
     private $userRepository;
 

@@ -79,12 +79,18 @@ class InfoTopic implements TopicInterface
      */
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
-        /*
-            $topic->getId() will contain the FULL requested uri, so you can proceed based on that
+        $eligible = $this->createEligible($connection, $topic);
+        $topic->broadcast(['msg' => $event], [], $eligible);
+    }
 
-            if ($topic->getId() == "acme/channel/shout")
-               //shout something to all subs.
-        */
+    /**
+     * @param ConnectionInterface $connection
+     * @param Topic $topic
+     *
+     * @return array
+     */
+    public function createEligible(ConnectionInterface $connection, Topic $topic): array
+    {
         $username = $this->clientManipulator->getClient($connection)->getUsername();
         $subscribers = $this->clientManipulator->getAll($topic);
         $eligible = [];
@@ -93,14 +99,7 @@ class InfoTopic implements TopicInterface
                 $eligible[] = $subscriber['connection']->WAMP->sessionId;
             }
         }
-
-        $topic->broadcast(
-            [
-                'msg' => $event
-            ],
-            [],
-            $eligible
-        );
+        return $eligible;
     }
 
     /**

@@ -38,6 +38,12 @@ services:
     App\EventListener\UserListener:
         tags:
             - { name: doctrine.event_listener, event: preRemove }
+
+#    App\Utils\Timer:
+#        tags:
+#            - {name: utils_timer}
+#        arguments: [App\Repository\ProjectRepository]
+
     Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface: '@gos_web_socket.websocket.client_manipulator'
 
     App\Service\Websocket\InfoTopic:
@@ -46,6 +52,7 @@ services:
 
     rpc_sample_service:
         class: App\Service\Websocket\InfoRpc
+#        arguments: [Symfony\Bridge\Monolog\Logger, App\Repository\ProjectRepository]
         tags:
             - { name: gos_web_socket.rpc }
 

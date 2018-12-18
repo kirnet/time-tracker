@@ -101,9 +101,7 @@ class ProjectController extends AbstractController
         if ($project) {
             $userId = $this->getUser()->getId();
             if ($project->getOwnerId() === $userId) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($project);
-                $em->flush();
+                $this->projectRepository->delete($project);
                 return $this->redirectToRoute('user_project_list');
             }
         }
