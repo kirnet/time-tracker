@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Timer
 {
-    const STATE_RUNING = 'run';
+    const STATE_RUNNING = 'run';
     const STATE_PAUSED = 'pause';
     const STATE_STOPPED = 'stop';
 //    const STATE_NEW = 'new';

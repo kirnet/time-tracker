@@ -28,7 +28,6 @@
         "symfony/var-dumper": "*",
         "symfony/web-link": "*",
         "symfony/webpack-encore-bundle": "^1.0",
-        "symfony/webpack-encore-pack": "*",
         "symfony/yaml": "*"
     },
     "require-dev": {
@@ -85,7 +84,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "4.1.*"
+            "require": "4.2.*"
         }
     }
 }

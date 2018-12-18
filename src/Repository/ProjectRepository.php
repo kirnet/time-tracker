@@ -140,4 +140,13 @@ class ProjectRepository extends ServiceEntityRepository
         $this->entityManager->persist($project);
         $this->entityManager->flush();
     }
+
+    /**
+     * @param Project $project
+     */
+    public function delete(Project $project)
+    {
+        $this->entityManager->remove($project);
+        $this->entityManager->flush();
+    }
 }
