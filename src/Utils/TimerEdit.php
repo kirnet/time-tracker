@@ -29,15 +29,21 @@ class TimerEdit
     }
 
     /**
-     * @param array $params
+     * @param array $params ['id', 'name', 'state', 'user']
+     *
+     * @param null | Timer $timer
      *
      * @return Timer
      * @throws \Exception
      */
-    public function edit($params) : Timer
+    public function edit($params, $timer = null): Timer
     {
         $timerId = ($params['id'] ?? 0);
-        $timer = $this->timerRepository->findOneOrCreateById($timerId);
+        $now = new \DateTime();
+
+        if ($timer === null) {
+            $timer = $this->timerRepository->findOneOrCreateById($timerId);
+        }
         if ($timer->getId() === null) {
             $timer = new Timer();
             $timer->setTimerStart(new \DateTime());
@@ -47,28 +53,37 @@ class TimerEdit
             }
         }
 
-//        $this->timerRepository->resetStatus($params['id'], $params['user']->getId());
-        if ($params['projectId']) {
+        if (isset($params['projectId'])) {
             $project = $this->projectRepository->find($params['projectId']);
             $timer->setProject($project);
         }
-        $timer->setName($params['name']);
-        $timer->setState($params['state']);
-        $timer->setUser($params['user']);
-
+        if (isset($params['name'])) {
+            $timer->setName($params['name']);
+        }
+        if (isset($params['state'])) {
+            $timer->setState($params['state']);
+        }
+        if (isset($params['user'])) {
+            $timer->setUser($params['user']);
+        }
         if ($params['state'] === Timer::STATE_RUNNING) {
             $timer->setTimerStart(new \DateTime());
         }
         else if (in_array($params['state'], [Timer::STATE_PAUSED, Timer::STATE_STOPPED])) {
-//            $timer->setTimerStart(new \DateTime());
-            $startTime = $timer->getTimerStart()->getTimestamp();
-            $now = new \DateTime();
-            $time = $now->getTimestamp() - $startTime;
-            $time += $timer->getTime();
+            if (!empty($params['time'])) {
+                $time = $params['time'];
+            } else {
+                $startTime = $timer->getTimerStart()->getTimestamp();
+                $time = $now->getTimestamp() - $startTime;
+                $time += $timer->getTime();
+            }
+
             $timer->setTime($time);
         }
-
         $this->timerRepository->save($timer);
+        if ($timer->getState() === Timer::STATE_RUNNING) {
+            $this->timerRepository->resetStatus($timer->getId(), $params['user']->getId(), $this);
+        }
         return $timer;
     }
 }

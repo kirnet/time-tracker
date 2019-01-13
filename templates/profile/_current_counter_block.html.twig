@@ -1,0 +1,24 @@
+{#{% set src = 'build/images/play_button.png' %}#}
+{#{% if timerData.state|default('pause') == 'run' %}#}
+    {#{% set src = 'build/images/pause_button.png' %}#}
+{#{% endif %}#}
+<form action="" id="main_counter_form">
+    <div class="left-float">
+        <input value="{{ timerData.name|default('') }}" id="name_counter" name="name_counter" class="form-control" placeholder="{{ 'Counter name'|trans }}">
+    </div>
+    <div class="left-float">
+        <select id="counter_project" class="form-control">
+            <option value="">{{ 'Choose project'|trans }}</option>
+            {% for project in projects %}
+                <option {% if timerData.project.id|default(0) == project.id%}selected{% endif %} value="{{ project.id }}">{{ project.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="display_counter" id="main_counter">
+        {{ timerData.timerDisplay|default('00:00:00') }}
+    </div>
+    <div class="right-float">
+        <img id="main_button_action" class="timer_action" src="{{asset('build/images/play_button.png')}}" alt="" data-state="pause" data-timer_id="{{ timerData.id|default('') }}">
+        <img id="main_button_stop" class="timer_stop hidden" src="{{asset('build/images/stop_button.png')}}" alt="" data-state="new">
+    </div>
+</form>

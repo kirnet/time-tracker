@@ -15,7 +15,6 @@
             const T = {
               wsUri: "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}"
             };
-
         </script>
     </head>
     <body>
@@ -35,7 +34,7 @@
                                 </a>
                             </li>
                             {% if app.user %}
-                                {% if app.request.attributes.get('_route') != 'profile' %}
+                                {% if 'ProfileController' not in app.request.attributes.get('_controller') %}
                                     <li class="nav-item active">
                                         <a class="nav-link" href="{{ path('profile') }}">
                                             {{ 'Profile'|trans }}
@@ -59,7 +58,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown2">
                                 {% if app.user %}
-                                    <li class="dropdown-item"><a href="{{ path('logout') }}">{{ 'Logout'|trans }}</a></li>
+                                    <li class="dropdown-item"><a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
                                 {% else %}
                                         <li class="dropdown-item"><a href="{{ path('app_login') }}">{{ 'Login'|trans }}</a></li>
                                         <li class="dropdown-item"><a href="{{ path('user_registration') }}">{{ 'Registration'|trans }}</a></li>

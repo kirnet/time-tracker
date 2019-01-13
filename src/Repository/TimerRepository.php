@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Timer;
+use App\Utils\TimerEdit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -18,33 +20,72 @@ class TimerRepository extends ServiceEntityRepository
     /** @var EntityManagerInterface  */
     private $entityManager;
 
+    /** @var PaginatorInterface  */
+    private $paginator;
+
     /**
      * TimerRepository constructor.
      *
      * @param RegistryInterface $registry
      * @param EntityManagerInterface $entityManager
+     * @param PaginatorInterface $paginator
      */
-    public function __construct(RegistryInterface $registry, EntityManagerInterface $entityManager)
+    public function __construct(
+        RegistryInterface $registry,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator
+    )
     {
         parent::__construct($registry, Timer::class);
         $this->entityManager = $entityManager;
+        $this->paginator = $paginator;
     }
 
-    public function resetStatus($timerId, $userId)
+    /**
+     * @param $timerId
+     * @param $userId
+     * @param TimerEdit $timerEdit
+     *
+     * @throws \Exception
+     */
+    public function resetStatus($timerId, $userId, TimerEdit $timerEdit)
     {
         $activeTimers = $this->createQueryBuilder('t')
-            ->andWhere('t.user=' . $userId)
-            ->andWhere("t.state='run'")
-            ->andWhere('t.id!=' . $timerId)
+            ->where("t.state='" . Timer::STATE_RUNNING . "'")
+            ->andWhere('t.user = ' . $userId)
+            ->andWhere('t.id != ' . $timerId)
             ->getQuery()
             ->getResult()
         ;
-        $sql = "UPDATE timer SET state='pause'";
+        $params = ['state' => Timer::STATE_PAUSED];
         foreach ($activeTimers as $timer) {
-            $createdAt = $timer->getCreatedAt();
-
+            $timerEdit->edit($params, $timer);
         }
     }
+
+    /**
+     * @param $userId
+     * @param int $page
+     *
+     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     */
+    public function getTimerListByUserId($userId, $page = 1)
+    {
+        $queryBuilder = $this->createQueryBuilder('t')
+            ->where('t.user = :userId')
+            ->orderBy( 't.timerStart', 'DESC')
+            ->setParameter('userId', $userId)
+            ->getQuery()
+        ;
+
+        // Paginate the results of the query
+        return $this->paginator->paginate(
+            $queryBuilder,
+            $page,
+            25
+        );
+    }
+
 
     /**
      * @param int $id

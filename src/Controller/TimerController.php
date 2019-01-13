@@ -18,7 +18,6 @@ use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/timer")
- * Todo Delete this file and all views
  */
 class TimerController extends AbstractController
 {
@@ -59,6 +58,7 @@ class TimerController extends AbstractController
             'state' => $request->get('state'),
             'name' => $request->get('name'),
             'projectId' => $request->get('projectId'),
+            'time' => $request->get('time'),
             'user' => $this->getUser()
         ];
 

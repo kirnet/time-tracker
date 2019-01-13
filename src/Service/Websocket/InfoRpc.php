@@ -46,21 +46,13 @@ class InfoRpc implements RpcInterface
     }
 
     /**
-     * Adds the params together
-     *
-     * Note: $conn isnt used here, but contains the connection of the person making this request.
-     *
      * @param ConnectionInterface $connection
      * @param WampRequest $request
-     * @param array $params
+     * @param $params
      *
      * @return array
+     * @throws \Exception
      */
-    public function sum(ConnectionInterface $connection, WampRequest $request, $params)
-    {
-        return ["result" => array_sum($params)];
-    }
-
     public function timerEdit(ConnectionInterface $connection, WampRequest $request, $params)
     {
         $email = $this->clientManipulator->getClient($connection)->getUsername();

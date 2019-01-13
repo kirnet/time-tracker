@@ -1,62 +1,70 @@
-'use strict';
-
-const moment = require('moment');
+const Timer = new (require('easytimer'));
 const channel = 'info/channel';
-let startTimestamp = moment().startOf('day');
+
 
 $(function() {
-  let timerInterval;
+  // Timer.start({startValues: {seconds: 1}});
+  // Timer.addEventListener('secondsUpdated', function (e) {
+  //   // console.log(timer.getTotalTimeValues().seconds);
+  //   $('#test_timer').html(Timer.getTimeValues().toString(['days', 'hours', 'minutes', 'seconds']));
+  // });
+  let websocket = WS.connect(T.wsUri);
   let mainCounter = $('#main_counter');
   let mainAction = $('#main_button_action');
-  let time = 0;
+  let currentTime = 0;
   let wsSend;
 
-  $(document).on('click', '.timer_action', function(e) {
-    let button = $(this);
-    let counterId = button.data('timer_id');
-    let oldState = button.data('state');
-    let state = toggleState($(this), status);
+  function loadCounterList(isInit = false) {
+    console.log('loadCounterList ', 'isInit=', isInit);
+    $.ajax({
+      url: '/profile',
+      type: 'GET',
+      success: function(html) {
+        $('#counter_list').html(html);
+        if (isInit) {
+          pageInit();
+        }
+      }
+    });
+  }
 
-    console.log('oldStatus=', oldState);
-    if (button.attr('id') !== 'main_button_action') {
-      fillMainBlock(button);
-      let tr = button.parents(':eq(1)');
-      time = tr.find('.row_timer').text();
-      tr.find('.counter_state').text(button.data('state'));
-    }
-
-    toggleTimer(button, time);
-    toggleStopButton(button.next('img.timer_stop'), state);
-    toggleImageButton(button, state);
-
-    if (!e.which) {
-      return;
-    }
-
-    timerEdit(button, counterId, state);
-  });
-
-  function toggleTimer(element, time) {
+  function toggleTimer(element, timeStart) {
     if (element.data('state') === 'run') {
-      startTimer(element, time)
+      timerStart(element, timeStart);
+    } else if (element.data('state') === 'pause') {
+      timerPause();
     } else {
-      timerStop()
+      timerStop();
     }
   }
 
   function timerStop() {
-    clearInterval(timerInterval);
+    Timer.stop();
+    Timer.removeEventListener('secondsUpdated');
   }
 
-  function startTimer(element, time) {
-    if (time > 0) {
-      startTimestamp = moment().startOf('day');
-      startTimestamp.add(time, 'second');
+  function timerPause() {
+    Timer.pause();
+  }
+
+  function timerStart(element, startTime = 0) {
+    let timerId = $(element).data('timer_id');
+    if (Timer.isRunning() || timerId !== Timer.id) {
+      timerStop();
     }
-    timerInterval = setInterval(function() {
-      startTimestamp.add(1, 'second');
-      mainCounter.html(startTimestamp.format('HH:mm:ss'));
-    }, 1000);
+
+    Timer.id = timerId;
+    Timer.start({startValues: {seconds: startTime}});
+    Timer.addEventListener('secondsUpdated', function (e) {
+      let format = ['hours', 'minutes', 'seconds'];
+      if (currentTime > 86400) {
+        format.unshift('days');
+      }
+      // if (time > 2419200) {
+      //   format.unshift('days');
+      // }
+      $('#main_counter').html(Timer.getTimeValues().toString(format));
+    });
   }
 
   function toggleState(element, state) {
@@ -71,7 +79,6 @@ $(function() {
     } else {
       if (element.data('state') === 'stop' || element.data('state') === 'pause') {
         element.data('state', 'run');
-        // element.next('img.timer.stop').data('state', 'run');
       } else if (element.data('state') === 'run') {
         element.data('state', 'pause');
       }
@@ -126,89 +133,161 @@ $(function() {
       state: state,
       name: $('#name_counter').val(),
       projectId: $('#counter_project').val(),
-      time: startTimestamp.seconds(),
+      time: currentTime
     };
 
-    if (typeof wsSend === 'function') {
-      data.id = counterId;
-      wsSend(data, button);
-    } else {
-      $.ajax({
-        url: '/timer/edit/' + (counterId),
-        type: 'POST',
-        dataType: 'json',
-        data: data,
-        success: function(data) {
-          if (data.id && button) {
-            button.data('timer_id', data.id)
-          }
-          console.log(data);
+    $.ajax({
+      url: '/timer/edit/' + (counterId),
+      type: 'POST',
+      dataType: 'json',
+      data: data,
+      success: function(data) {
+        if (data.id && button) {
+          button.data('timer_id', data.id)
         }
-      });
-    }
+        loadCounterList();
+        if (typeof wsSend === 'function') {
+          data.id = counterId;
+          wsSend(data);
+        }
+      },
+      error: function(xhr, textStatus) {
+        //window.location.reload();
+      }
+    });
   }
 
-  $('td.counter_state').each(function() {
-    // let mainAction = $('#main_button_action');
-    if ($(this).html() === 'run' || $(this).html() === 'pause') {
+  $(document).on('click', '.timer_action', function(e) {
+    let button = $(this);
+    let counterId = button.data('timer_id');
+    let oldState = button.data('state');
+    let state = toggleState($(this));
 
+    console.log('oldStatus=', oldState);
+    if (button.attr('id') !== 'main_button_action') {
+      fillMainBlock(button);
+      let tr = button.parents(':eq(1)');
+      currentTime = parseInt(tr.find('.row_timer').text());
+      tr.find('.counter_state').text(button.data('state'));
     }
-    if ($(this).html() === 'run') {
-      let tr = $(this).parent();
-      let projectId = tr.find('.row_project').data('project_id');
-      time = tr.find('.row_timer').text();
-      startTimestamp.add(time, 'second');
-      $('#name_counter').val(tr.find('.row_name').text());
-      if (projectId) {
-        $('#counter_project').val(projectId);
-      }
 
-      mainAction.data('timer_id', tr.find('.timer_action').data('timer_id'));
-      mainAction.click();
-    } else if($(this).html() === 'pause') {
-      // mainAction.data('state', 'pause');
-      // let button = $(this).parent().find('.timer_action');
-      // let state = toggleState(button, 'pause');
-      // toggleImageButton(button, state);
+    if (state === 'pause') {
+      currentTime = Timer.getTotalTimeValues().seconds;
     }
+
+    if (e.which) {
+      timerEdit(button, counterId, state);
+    }
+
+    toggleTimer(button, currentTime);
+    toggleStopButton(button.next('img.timer_stop'), state);
+    toggleImageButton(button, state);
   });
 
+  function pageInit() {
+    console.log('mainButtonData = ', $('#main_button_action').data());
+    $('td.counter_state').each(function () {
+      if ($(this).html() === 'run' || $(this).html() === 'pause') {
+
+      }
+      if ($(this).html() === 'run') {
+        let tr = $(this).parent();
+        let projectId = tr.find('.row_project').data('project_id');
+        currentTime = parseInt(tr.find('.row_timer').text());
+
+        // startTimestamp.add(time, 'second');
+
+        $('#name_counter').val(tr.find('.row_name').text());
+        if (projectId) {
+          $('#counter_project').val(projectId);
+        }
+
+        $('#main_button_action')
+          .data('timer_id', tr.find('.timer_action').data('timer_id'))
+          //.data('start_time', time)
+        ;
+        $('#main_button_action').click();
+        return false;
+      } else if ($(this).html() === 'pause') {
+        // mainAction.data('state', 'pause');
+        // let button = $(this).parent().find('.timer_action');
+        // let state = toggleState(button, 'pause');
+        // toggleImageButton(button, state);
+      }
+    });
+  }
   $('#counter_project').change(function() {
     if (!$('#main_button_action').data('timer_id')) {
       return false;
     }
-    timerEdit(false, mainAction.data('timer_id'), mainAction.data('state'));
+    timerEdit(false, $('#main_button_action').data('timer_id'), $('#main_button_action').data('state'));
 
   });
 
-  let websocket = WS.connect(T.wsUri);
+  function refreshCounterPage(data) {
+    console.log('refreshCounterPage ' , data);
+    $.ajax({
+      type: 'post',
+      url: 'profile/counter_form',
+      data: {data},
+      success: function(html) {
+        $('#current_counter_block').html(html);
+        let isRun = data.state === 'run';
+        loadCounterList(isRun);
+        if (isRun === false) {
+          $('#main_counter').text(data.timerDisplay);
+          timerStop();
+        }
+      }
+    });
+  }
 
   websocket.on("socket/connect", function (session) {
 
-    wsSend = function(data, button) {
-      session.call('sample/timerEdit', data).then(
-        function (result) {
-          if (result.id && button) {
-            button.data('timer_id', data.id)
-          }
+    console.log('Connect');
 
-          console.log("RPC Valid!", result);
-        },
-        function (error, desc) {
-          console.log("RPC Error", error, desc);
-        }
-      );
+    wsSend = function(data) {
+
+      session.publish(channel, {
+        run: ['refreshCounterPage'],
+        data: data
+      });
+
+      // session.call('sample/timerEdit', data).then(
+      //   function (result) {
+      //     if (result.id && button) {
+      //       button.data('timer_id', result.id);
+      //       session.publish(channel, {
+      //         run: ['refreshCounterPage'],
+      //         data: data
+      //       });
+      //       loadCounterList();
+      //     }
+      //     console.log("RPC Valid!", result);
+      //   },
+      //   function (error, desc) {
+      //     console.log("RPC Error", error, desc);
+      //   }
+      // );
     };
 
     $('#websock').off().on('click', function() {
       session.publish(channel, {msg: 'send by click'});
+      console.log('click websock');
       return false;
     });
 
-    console.log('Connect');
-
     session.subscribe(channel, function (uri, payload) {
-      console.log("Received message", payload.msg);
+      console.log("Received message", payload);
+      if (typeof payload.run === 'object') {
+        payload.run.forEach(function(exec) {
+          try {
+            eval(exec)(payload.data);
+          } catch(e) {
+            console.log(e);
+          }
+        });
+      }
     });
 
     // session.call("sample/sum", {"term1": 2, "term2": 5}).then(
@@ -220,7 +299,7 @@ $(function() {
     //   }
     // );
 
-    session.publish(channel, {msg: "This is a message!"});
+    // session.publish(channel, {msg: "This is a message!"});
 
     //session.unsubscribe(channel);
 
@@ -234,4 +313,5 @@ $(function() {
     console.log("Disconnected for " + error.reason + " with code " + error.code);
   });
 
+  pageInit();
 }); //Autorun

@@ -122,7 +122,7 @@ class ProjectRepository extends ServiceEntityRepository
      * @return Project
      * @throws \Exception
      */
-    public function findOneOrCreateById(int $id)
+    public function findOneOrCreateById(int $id): Project
     {
         $project = $this->find($id);
         if (!$project) {

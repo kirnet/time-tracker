@@ -38,7 +38,7 @@ security:
                 username_parameter: email
                 password_parameter: password
             logout:
-                path: logout
+                path: app_logout
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator

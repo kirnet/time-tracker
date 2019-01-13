@@ -9,6 +9,10 @@ use Ratchet\ConnectionInterface;
 use Ratchet\Wamp\Topic;
 use Gos\Bundle\WebSocketBundle\Router\WampRequest;
 
+/**
+ * Class InfoTopic
+ * @package App\Service\Websocket
+ */
 class InfoTopic implements TopicInterface
 {
     /** @var LoggerInterface  */
@@ -80,22 +84,26 @@ class InfoTopic implements TopicInterface
     public function onPublish(ConnectionInterface $connection, Topic $topic, WampRequest $request, $event, array $exclude, array $eligible)
     {
         $eligible = $this->createEligible($connection, $topic);
-        $topic->broadcast(['msg' => $event], [], $eligible);
+        $exclude = $eligible ? [] : [$connection->WAMP->sessionId];
+        $topic->broadcast($event, $exclude, $eligible);
     }
 
     /**
-     * @param ConnectionInterface $connection
+     * @param object $connection
      * @param Topic $topic
      *
      * @return array
      */
-    public function createEligible(ConnectionInterface $connection, Topic $topic): array
+    public function createEligible($connection, Topic $topic): array
     {
         $username = $this->clientManipulator->getClient($connection)->getUsername();
         $subscribers = $this->clientManipulator->getAll($topic);
+        $currentSessionId = $connection->WAMP->sessionId;
         $eligible = [];
         foreach ($subscribers as $subscriber) {
-            if ($username === $subscriber['client']->getEmail()) {
+            if ($username === $subscriber['client']->getEmail() &&
+                $currentSessionId !== $subscriber['connection']->WAMP->sessionId
+            ) {
                 $eligible[] = $subscriber['connection']->WAMP->sessionId;
             }
         }

@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Timer index{% endblock %}
+
+{% block body %}
+    <h1>Timer index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>State</th>
+                <th>TimerStart</th>
+                <th>Time</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for timer in timers %}
+            <tr>
+                <td>{{ timer.id }}</td>
+                <td>{{ timer.name }}</td>
+                <td>{{ timer.state }}</td>
+                <td>{{ timer.timerStart ? timer.timerStart|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ timer.time }}</td>
+                <td>{{ timer.createdAt ? timer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('timer_show', {'id': timer.id}) }}">show</a>
+                    <a href="{{ path('timer_edit', {'id': timer.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('timer_new') }}">Create new</a>
+{% endblock %}
