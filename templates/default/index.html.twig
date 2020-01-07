@@ -3,7 +3,5 @@
 {% block title %}{{ 'Counter'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="center-block" style="display: flex; align-items: center;justify-content: center; margin-top:-40px">
-        <img src="{{ asset('build/images/clock.jpg') }}" alt="">
-    </div>
+    {% include 'clock/clock.html.twig' %}
 {% endblock %}

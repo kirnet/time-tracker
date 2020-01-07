@@ -22,7 +22,9 @@ Encore
     .addEntry('js/profile', './assets/js/profile.js')
     .addEntry('js/project_edit', './assets/js/project_edit.js')
     .addEntry('js/websocket', './assets/js/websocket.js')
+    .addEntry('js/clock', './assets/js/clock.js')
     .addStyleEntry('css/global', './assets/css/global.scss')
+    .addStyleEntry('css/clock', './assets/css/clock.scss')
 
     /*
      * FEATURE CONFIG
