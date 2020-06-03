@@ -71,7 +71,7 @@ class InfoRpc implements RpcInterface
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'info.rpc';
     }

@@ -21,14 +21,14 @@
         {% block header %}
             <header>
                 <div class="navbar navbar-expand-md navbar-dark bg-dark mb-4" role="navigation">
-                    <a class="navbar-brand" href="{{ path('default') }}">{{ 'Time tracker'|trans }}</a>
+                    <a class="navbar-brand" href="{{ path('home') }}">{{ 'Time tracker'|trans }}</a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
-                                <a class="nav-link" href="{{ path('default') }}">
+                                <a class="nav-link" href="{{ path('home') }}">
                                     {{ 'Home'|trans }}
                                     <span class="sr-only">(current)</span>
                                 </a>
@@ -44,7 +44,7 @@
                             {% endif %}
                             {% if is_granted('ROLE_ADMIN') %}
                                 <li class="nav-item active">
-                                    <a class="nav-link" href="{{ path('sonata_admin_redirect') }}">
+                                    <a class="nav-link" href="{{ path('admin') }}">
                                         {{ 'Admin'|trans }}
                                     </a>
                                 </li>
@@ -57,13 +57,13 @@
                                     {% if app.user %} {{ app.user.email }} {% else %}{{ 'Profile'|trans }}{% endif %}
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown2">
-                                {% if app.user %}
-                                    <li class="dropdown-item"><a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
-                                {% else %}
+                                    {% if app.user %}
+                                        <li class="dropdown-item"><a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
+                                    {% else %}
                                         <li class="dropdown-item"><a href="{{ path('app_login') }}">{{ 'Login'|trans }}</a></li>
                                         <li class="dropdown-item"><a href="{{ path('user_registration') }}">{{ 'Registration'|trans }}</a></li>
-                                    </ul>
-                                {% endif %}
+                                    {% endif %}
+                                </ul>
                             </li>
                         </ul>
                         </div>

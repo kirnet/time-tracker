@@ -5,8 +5,10 @@ namespace App\Repository;
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Project|null find($id, $lockMode = null, $lockVersion = null)
@@ -27,12 +29,12 @@ class ProjectRepository extends ServiceEntityRepository
     /**
      * ProjectRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param PaginatorInterface $paginator
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         PaginatorInterface $paginator,
         EntityManagerInterface $entityManager
     ) {
@@ -62,7 +64,7 @@ class ProjectRepository extends ServiceEntityRepository
      * @param $userId
      * @param int $page
      *
-     * @return \Knp\Component\Pager\Pagination\PaginationInterface
+     * @return PaginationInterface
      */
     public function getProjectListByUserId($userId, $page = 1)
     {
@@ -120,7 +122,7 @@ class ProjectRepository extends ServiceEntityRepository
      * @param int $id
      *
      * @return Project
-     * @throws \Exception
+     * @throws Exception
      */
     public function findOneOrCreateById(int $id): Project
     {

@@ -1,2 +1,12 @@
 app_logout:
   path: /logout
+
+home:
+  path: /
+  controller: App\Controller\DefaultController::index
+  methods:    GET
+
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
+  methods:    GET

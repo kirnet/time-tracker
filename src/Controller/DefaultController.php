@@ -7,8 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-
 
 class DefaultController extends AbstractController
 {
@@ -21,10 +19,13 @@ class DefaultController extends AbstractController
     {
         $this->user = $tokenStorage->getToken()->getUser();
     }
+
     /**
-     * @Route("/", name="default")
+     * @param Request $request
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(Request $request, TranslatorInterface $translator)
+    public function index(Request $request)
     {
 //        throw new NotFoundHttpException();
         return $this->render('default/index.html.twig', [

@@ -114,7 +114,7 @@ class InfoTopic implements TopicInterface
      * Like RPC is will use to prefix the channel
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'info.topic';
     }

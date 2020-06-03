@@ -12,8 +12,10 @@ parameters:
 services:
     session.handler.pdo:
         class: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+
         arguments:
-            - !service { class: PDO, factory: 'database_connection:getWrappedConnection' }
+            - '%env(DATABASE_URL)%'
+#            - !service { class: PDO, factory: 'database_connection:getWrappedConnection' }
             - { lock_mode: 0 }
     # default configuration for services in *this* file
     _defaults:
@@ -44,17 +46,29 @@ services:
 #            - {name: utils_timer}
 #        arguments: [App\Repository\ProjectRepository]
 
-    Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface: '@gos_web_socket.websocket.client_manipulator'
+#    app.websocket.rpc.acme:
+#        class: App\Websocket\Rpc\AcmeRpc
+#        tags:
+#            - { name: gos_web_socket.rpc }
 
-    App\Service\Websocket\InfoTopic:
-        tags:
-            - { name: gos_web_socket.topic }
 
-    rpc_sample_service:
-        class: App\Service\Websocket\InfoRpc
-#        arguments: [Symfony\Bridge\Monolog\Logger, App\Repository\ProjectRepository]
-        tags:
-            - { name: gos_web_socket.rpc }
+
+
+#    Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface: '@gos_web_socket.websocket.client_manipulator'
+#
+#    App\Service\Websocket\InfoTopic:
+#        tags:
+#            - { name: gos_web_socket.topic }
+#    rpc_sample_service:
+#        class: App\Service\Websocket\InfoRpc
+#
+#        tags:
+#            - { name: gos_web_socket.rpc }
+
+
+
+
+
 
 #    App\Websocket\InfoRpc:
 #        tags:

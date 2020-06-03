@@ -7,7 +7,7 @@ use App\Utils\TimerEdit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * @method Timer|null find($id, $lockMode = null, $lockVersion = null)
@@ -26,12 +26,12 @@ class TimerRepository extends ServiceEntityRepository
     /**
      * TimerRepository constructor.
      *
-     * @param RegistryInterface $registry
+     * @param ManagerRegistry $registry
      * @param EntityManagerInterface $entityManager
      * @param PaginatorInterface $paginator
      */
     public function __construct(
-        RegistryInterface $registry,
+        ManagerRegistry $registry,
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator
     )
