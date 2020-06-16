@@ -7,6 +7,7 @@ use App\Form\TimerType;
 use App\Repository\ProjectRepository;
 use App\Repository\TimerRepository;
 use App\Utils\TimerEdit;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +50,7 @@ class TimerController extends AbstractController
      * @param TimerEdit $timerEdit
      *
      * @return JsonResponse
-     * @throws \Exception
+     * @throws Exception
      */
     public function edit(Request $request, TimerEdit $timerEdit): jsonResponse
     {
@@ -63,12 +64,20 @@ class TimerController extends AbstractController
         ];
 
         $timer = $timerEdit->edit($params);
-        $normalizer = new ObjectNormalizer();
-        $normalizer->setCircularReferenceHandler(function ($object) {
-            return $object->getId();
-        });
-        $serializer = new Serializer([$normalizer], ['json' => new JsonEncoder()]);
-        $res = $serializer->serialize($timer, 'json');
+//        $normalizer = new ObjectNormalizer();
+//        $normalizer->setCircularReferenceHandler(function ($object) {
+//            return $object->getId();
+//        });
+
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+
+        $serializer = new Serializer($normalizers, $encoders);
+
+
+//        $serializer = new Serializer([$normalizer], ['json' => new JsonEncoder()]);
+        $res = $serializer->encode($timer, 'json');
+//        $res = $serializer->serialize($timer, 'json');
         return new JsonResponse($res, 200, [], true);
     }
 

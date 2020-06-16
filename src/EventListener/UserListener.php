@@ -14,8 +14,9 @@ class UserListener
     /**
      * @param LifecycleEventArgs $args
      */
-    public function preRemove(LifecycleEventArgs $args) {
-        $user = $args->getObject();
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $user              = $args->getObject();
         $projectRepository = $args->getObjectManager()->getRepository(Project::class);
         $projectRepository->removeByOwnerId($user->getId());
     }

@@ -39,18 +39,20 @@ class InfoTopic implements TopicInterface
      */
     public function onSubscribe(ConnectionInterface $connection, Topic $topic, WampRequest $request)
     {
-
         $username = $this->clientManipulator->getClient($connection)->getUsername();
-        $userConnection = $this->clientManipulator->findByUsername($topic, $username);
+        $userConnections = $this->clientManipulator->findAllByUsername($topic, $username);
 
         //$this->logger->info('socket user' . json_encode($user));
         //this will broadcast the message to ALL subscribers of this topic.
-        if ($userConnection !== false && $username == $userConnection['client']->getEmail()) {
-            $topic->broadcast(
-                ['msg' => $connection->resourceId . "{$username} has joined " . $topic->getId()],
-                [],
-                [$userConnection['connection']->WAMP->sessionId]
-            );
+
+        foreach ($userConnections as $userConnection) {
+            if ($$userConnection->getConnection()->resourceId !== $connection->resourceId && $username == $userConnection['client']->getUser()->getEmail()) {
+                $topic->broadcast(
+                    ['msg' => $connection->resourceId . "{$username} has joined " . $topic->getId()],
+                    [],
+                    [$userConnection['connection']->WAMP->sessionId]
+                );
+            }
         }
     }
 
@@ -101,7 +103,7 @@ class InfoTopic implements TopicInterface
         $currentSessionId = $connection->WAMP->sessionId;
         $eligible = [];
         foreach ($subscribers as $subscriber) {
-            if ($username === $subscriber['client']->getEmail() &&
+            if ($username === $subscriber['client']->getUser()->getEmail() &&
                 $currentSessionId !== $subscriber['connection']->WAMP->sessionId
             ) {
                 $eligible[] = $subscriber['connection']->WAMP->sessionId;

@@ -1,6 +1,6 @@
 const Timer = new (require('easytimer'));
 const channel = 'info/channel';
-
+const WS = require('../../public/bundles/goswebsocket/js/websocket.min');
 
 $(function() {
   // Timer.start({startValues: {seconds: 1}});
@@ -71,7 +71,7 @@ $(function() {
     if (element.attr('id') !== 'main_button_action') {
       let tr = element.parents(':eq(1)');
       tr.find('.counter_state').text(state || element.data('state'));
-      toggleState($('#main_button_action'), state);
+      toggleState(mainAction, state);
     }
 
     if (state) {
@@ -123,7 +123,7 @@ $(function() {
     let parent = element.parents(':eq(1)');
     $('#name_counter').val(parent.find('.row_name').text());
     $('#counter_project').val(parent.find('.row_project').data('project_id'));
-    $('#main_counter').val(parent.find('row_timer').text());
+    $('#main_counter').val(parent.find('.row_timer').text());
     $('#main_button_action').data('timer_id', element.data('timer_id'));
   }
 
@@ -202,11 +202,11 @@ $(function() {
           $('#counter_project').val(projectId);
         }
 
-        $('#main_button_action')
+        mainAction
           .data('timer_id', tr.find('.timer_action').data('timer_id'))
           //.data('start_time', time)
         ;
-        $('#main_button_action').click();
+        mainAction.click();
         return false;
       } else if ($(this).html() === 'pause') {
         // mainAction.data('state', 'pause');
@@ -220,7 +220,7 @@ $(function() {
     if (!$('#main_button_action').data('timer_id')) {
       return false;
     }
-    timerEdit(false, $('#main_button_action').data('timer_id'), $('#main_button_action').data('state'));
+    timerEdit(false, mainAction.data('timer_id'), mainAction.data('state'));
 
   });
 

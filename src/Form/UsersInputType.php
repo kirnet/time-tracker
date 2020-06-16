@@ -30,6 +30,7 @@ use Symfony\Component\Form\FormView;
  */
 class UsersInputType extends AbstractType
 {
+    /** @var UserRepository  */
     private $userRepository;
 
     public function __construct(UserRepository $users)

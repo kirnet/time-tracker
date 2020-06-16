@@ -45,12 +45,11 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile", name="profile")
      * @param Request $request
      * @param TimerRepository $timerRepository
      *
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function index(Request $request, TimerRepository $timerRepository)
     {
@@ -73,10 +72,9 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/project", name="user_project_list")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function project(Request $request)
     {
@@ -92,10 +90,9 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/settings", name="user_settings")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function settings(Request $request)
     {
@@ -113,7 +110,6 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("/profile/counter_form", name="counter_form")
      * @param Request $request
      *
      * @return Response

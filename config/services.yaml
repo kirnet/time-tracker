@@ -54,11 +54,11 @@ services:
 
 
 
-#    Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface: '@gos_web_socket.websocket.client_manipulator'
+#    Gos\Bundle\WebSocketBundle\Client\ClientManipulatorInterface: '@gos_web_socket.websocket.client.manipulator'
 #
-#    App\Service\Websocket\InfoTopic:
-#        tags:
-#            - { name: gos_web_socket.topic }
+    App\Service\Websocket\InfoTopic:
+        tags:
+            - { name: gos_web_socket.topic }
 #    rpc_sample_service:
 #        class: App\Service\Websocket\InfoRpc
 #
@@ -76,21 +76,21 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    admin.project:
-        class: App\Admin\ProjectAdmin
-        arguments: [~, App\Entity\Project, ~]
-        tags:
-        - { name: sonata.admin, manager_type: orm, label: Project }
-        public: true
-    admin.user:
-        class: App\Admin\UserAdmin
-        arguments: [~, App\Entity\User, ~, '@service_container']
-        tags:
-        - { name: sonata.admin, manager_type: orm, label: User }
-        public: true
-    admin.timer:
-        class: App\Admin\TimerAdmin
-        arguments: [~, App\Entity\Timer, ~]
-        tags:
-        - { name: sonata.admin, manager_type: orm, label: Timer }
-        public: true
+#    admin.project:
+#        class: App\Admin\ProjectAdmin
+#        arguments: [~, App\Entity\Project, ~]
+#        tags:
+#        - { name: sonata.admin, manager_type: orm, label: Project }
+#        public: true
+#    admin.user:
+#        class: App\Admin\UserAdmin
+#        arguments: [~, App\Entity\User, ~, '@service_container']
+#        tags:
+#        - { name: sonata.admin, manager_type: orm, label: User }
+#        public: true
+#    admin.timer:
+#        class: App\Admin\TimerAdmin
+#        arguments: [~, App\Entity\Timer, ~]
+#        tags:
+#        - { name: sonata.admin, manager_type: orm, label: Timer }
+#        public: true

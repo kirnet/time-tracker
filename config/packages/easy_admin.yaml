@@ -1,6 +1,20 @@
 easy_admin:
-    entities:
-#        # List the entity class name you want to manage
-        - App\Entity\Project
-        - App\Entity\Timer
-        - App\Entity\User
+  list:
+    max_results: 100
+  entities:
+    Project:
+      class: App\Entity\Project
+      list:
+        fields:
+          - { property: 'id' }
+          - { property: 'name' }
+          - { property: 'owner_id', type: 'entity' }
+          - { property: 'timers' }
+          - { property: 'description' }
+          - { property: 'created_at', type: 'datetime' }
+          - { property: 'logo', type: 'image', base_path: '/uploads/project_logo' }
+    Timer:
+      class: App\Entity\Timer
+    User:
+      class: App\Entity\User
+  site_name: 'Admin'
