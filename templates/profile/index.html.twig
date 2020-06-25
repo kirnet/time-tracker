@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'profile'|trans }} {% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('build/js/profile.js') }}"></script>
+{% endblock %}
+{% block body %}
+
+    <div class="side-bar">
+        <ul class="list-group">
+            <li class="list-group-item {% if app.request.attributes.get('_route') == 'profile' %}active{% endif %}">
+                <a href="{{ path('profile') }}">{% trans %}counters{% endtrans %}</a>
+            </li>
+            <li class="list-group-item {% if app.request.attributes.get('_route') == 'user_project_list' %}active{% endif %}">
+                <a href="{{ path('user_project_list') }}">{{ 'Projects'|trans }}</a>
+                <div class="float-lg-right">
+                    <a href="{{ path('project_edit') }}">
+                        <img src="{{ asset('build/images/plus.png') }}" alt="">
+                    </a>
+                </div>
+            </li>
+            <li class="list-group-item {% if app.request.attributes.get('_route') == 'user_period_list' %}active{% endif %}">
+                <a href="{{ path('user_period_list') }}">{{ 'Periods'|trans }}</a>
+                <div class="float-lg-right">
+                    <a href="{{ path('period_edit') }}">
+                        <img src="{{ asset('build/images/plus.png') }}" alt="">
+                    </a>
+                </div>
+            </li>
+            <li class="list-group-item {% if app.request.attributes.get('_route') == 'user_settings' %}active{% endif %}">
+                <a href="{{ path('user_settings') }}">{{ 'Settings'|trans }}</a>
+            </li>
+            <li class="list-group-item">
+                <a href="#" id="websock">send websocket</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        {% block content %}{% endblock %}
+    </div>
+{% endblock %}

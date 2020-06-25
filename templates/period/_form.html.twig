@@ -1,0 +1,9 @@
+<div class="container">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.time_start) }}
+    {{ form_row(form.alert_time) }}
+    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+    {{ form_end(form) }}
+</div>

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block title %} {% trans %}Registration{% endtrans %}{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                {{ form_start(form) }}
+{#                {% for error in error %}#}
+{#                    <li>{{ error.message }}</li>#}
+{#                {% endfor %}#}
+
+{#                {{ form_errors(form) }}#}
+                {{ form_row(form.login) }}
+                {{ form_row(form.email) }}
+                {{ form_row(form.password.first) }}
+                {{ form_row(form.password.second) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

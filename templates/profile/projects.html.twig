@@ -1,0 +1,48 @@
+{% extends 'profile/index.html.twig' %}
+
+{% block javascripts %}{% endblock %}
+
+{% block content %}
+    <table class="table list">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>{{ 'Logo'|trans }}</th>
+            <th>{{ 'Name'|trans }}</th>
+            <th>{{ 'Description'|trans }}</th>
+            <th>{% trans %}CreatedAt{% endtrans %}</th>
+            <th>{% trans %}Total time{% endtrans %}</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for project in projects %}
+            <tr>
+                <td>{{ project.id }}</td>
+                <td>
+                    {% if project.logo %}
+                        <img src="/uploads/project_logo/thumbs/{{ project.logo }}" alt="logo" style="height:40px">
+                    {% endif %}
+                </td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.description }}</td>
+                <td>{{ project.createdAt ? project.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ project.totalTime }}</td>
+                <td>
+                    {% if app.user.id == project.ownerId %}
+                        <a href="{{ path('project_edit', {'id': project.id}) }}">Edit</a>
+                        <a href="{{ path('project_delete', {'id': project.id}) }}">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(projects) }}
+    </div>
+{% endblock %}

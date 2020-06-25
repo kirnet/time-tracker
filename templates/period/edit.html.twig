@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ 'Edit period'|trans }}{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{#    <script src="{{ asset('build/js/project_edit.js') }}"></script>#}
+{% endblock %}
+
+{% block body %}
+    {% form_theme form 'bootstrap_4_layout.html.twig' %}
+    {% include 'period/_form.html.twig' %}
+{% endblock %}

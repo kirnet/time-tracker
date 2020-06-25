@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% trans %}Welcome{% endtrans %}!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" type="text/css" href="{{ asset('build/css/global.css') }}">
+        {% endblock %}
+        {#<link rel="manifest" href="/build/manifest.json">#}
+        {#<script src="{{ asset('build/js/moment-timer.js') }}"></script>#}
+        <script src="{{ asset('build/js/app.js') }}"></script>
+        <script src="{{ asset('bundles/goswebsocket/js/vendor/autobahn.min.js') }}"></script>
+        <script src="{{ asset('bundles/goswebsocket/js/websocket.js') }}"></script>
+        <script type="text/javascript">
+            const T = {
+              wsUri: "ws://{{ gos_web_socket_server_host }}:{{ gos_web_socket_server_port }}"
+            };
+        </script>
+    </head>
+    <body>
+        {% block header %}
+            <header>
+                <div class="navbar navbar-expand-md navbar-dark bg-dark mb-4" role="navigation">
+                    <a class="navbar-brand" href="{{ path('default') }}">{{ 'Time tracker'|trans }}</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarCollapse">
+                        <ul class="navbar-nav mr-auto">
+{#                            <li class="nav-item active">#}
+{#                                <a class="nav-link" href="{{ path('default') }}">#}
+{#                                    {{ 'Home'|trans }}#}
+{#                                    <span class="sr-only">(current)</span>#}
+{#                                </a>#}
+{#                            </li>#}
+                            {% if app.user %}
+                                {% if 'ProfileController' not in app.request.attributes.get('_controller') %}
+                                    <li class="nav-item active">
+                                        <a class="nav-link" href="{{ path('profile') }}">
+                                            {{ 'Profile'|trans }}
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="{{ path('easyadmin') }}">
+                                        {{ 'Admin'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <div class="float-right">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle active" id="dropdown2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer">
+                                    {% if app.user %} {{ app.user.email }} {% else %}{{ 'Profile'|trans }}{% endif %}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown2">
+                                    {% if app.user %}
+                                        <li class="dropdown-item"><a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a></li>
+                                    {% else %}
+                                        <li class="dropdown-item"><a href="{{ path('app_login') }}">{{ 'Login'|trans }}</a></li>
+                                        <li class="dropdown-item"><a href="{{ path('user_registration') }}">{{ 'Registration'|trans }}</a></li>
+                                    {% endif %}
+                                </ul>
+                            </li>
+                        </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        {% endblock %}
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

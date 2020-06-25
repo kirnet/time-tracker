@@ -1,0 +1,17 @@
+<div class="container">
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    {{ form_row(form.users) }}
+    {{ form_row(form.logo) }}
+    {% if form.vars.data.logo %}
+        <img src="/uploads/project_logo/thumbs/{{ form.vars.data.logo }}" alt="logo">
+        <input type="checkbox" name="delete_logo" id="delete_logo">
+        <label for="delete_logo">{{ 'Delete logo'|trans }}</label>
+        <br>
+        <br>
+    {% endif %}
+    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+    {{ form_end(form) }}
+</div>

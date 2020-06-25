@@ -1,0 +1,8 @@
+info_topic:
+    channel: info/channel
+    handler: 'info.topic' #related to the getName() of your topic
+info_rpc:
+    channel: sample/{method}
+    handler: 'info.rpc' #related to the getName() or your RPC service
+    requirements:
+        method: "[a-z_]+"

@@ -1,0 +1,75 @@
+$primary: darken(#428bca, 20%);
+
+@import "~bootstrap/scss/bootstrap";
+@import "bootstrap-tagsinput.scss";
+@import "~font-awesome/scss/font-awesome.scss";
+
+.side-bar {
+  width: 300px;
+  float: left;
+  margin-left: 5px;
+}
+
+.content {
+  margin-left: 320px;
+}
+
+.list-group-item.active a {
+  color:#fff;
+
+}
+
+.list-group-item a:hover {
+  text-decoration: none;
+}
+
+.counter-header {
+  background-color: #f3f1f1;
+  height: 48px;
+}
+
+.right-float {
+  float:right;
+}
+
+.left-float {
+  float:left;
+}
+
+.counter-header .left-float {
+  width: 300px;
+  padding: 6px;
+}
+
+.counter-header .display_counter {
+  float:left;
+  font-size: 32px;
+  padding-top: 2px;
+  margin-left: 10px;
+}
+
+.timer_action, .timer_stop {
+  cursor: pointer;
+}
+
+table.vertical-middle td {
+  vertical-align: middle;
+}
+
+.hidden {
+  display: none;
+}
+
+table.vertical-middle td {
+  padding: 0;
+}
+
+table.vertical-middle tbody tr:hover {
+  background: #d3d9df;
+}
+
+table.list td {
+  padding: 2px;
+  height: 50px;
+  vertical-align: middle;
+}

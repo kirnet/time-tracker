@@ -1,0 +1,26 @@
+# see https://github.com/symfony/recipes/blob/master/symfony/messenger/4.1/config/packages/messenger.yaml
+framework:
+  messenger:
+    failure_transport: failed
+    transports:
+      failed:
+        dsn: 'doctrine://default'
+        options:
+          table_name: failed_messages
+      async_priority_high:
+        # Uncomment the following line to enable a transport named "amqp"
+        dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+        retry_strategy:
+          max_retries: 3
+          delay: 1000
+          multiplier: 2
+        options:
+          queue_name: period_alert
+          exchange:
+            name: email_notifications
+            type: fanout
+
+    routing:
+      # Route your messages to the transports
+      # 'App\Message\YourMessage': amqp
+      App\Message\PeriodAlertQueue: async_priority_high

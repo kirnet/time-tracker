@@ -1,0 +1,125 @@
+$size: 300px;
+
+@keyframes rotateArms {
+  from {transform: rotate(0);}
+  to {transform: rotate(360deg);}
+}
+
+@-webkit-keyframes rotateArms {
+  from {transform: rotate(0);}
+  to {transform: rotate(360deg);}
+}
+
+@-moz-keyframes rotateArms {
+  from {transform: rotate(0);}
+  to {transform: rotate(360deg);}
+}
+
+.clock {
+  width:$size;
+  height:$size;
+  box-shadow: 0px 0px 0px 10px #222;
+  border-radius:$size;
+  position: relative;
+}
+
+.center, .minute-lines > div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+}
+
+.knob {
+  width: $size/15;
+  height: $size/15;
+  background: #111;
+  border-radius: $size/15;
+  z-index:4;
+}
+
+.arm {
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform-origin: top left 0;
+  -webkit-transform-origin: top left 0;
+  -moz-transform-origin: top left 0;
+  z-index:2;
+  width:0;
+  animation: rotateArms linear 60s infinite;
+  -webkit-animation: rotateArms linear 60s infinite;
+  -moz-animation: rotateArms linear 60s infinite;
+}
+
+.minute.arm {
+  height:$size/2.6;
+  box-shadow:0 0 0 $size/100 #444;
+  animation-duration: 60s * 60;
+  -webkit-animation-duration: 60s * 60;
+  -moz-animation-duration: 60s * 60;
+}
+
+.hour.arm {
+  height:$size/3.6;
+  box-shadow: 0 0 0 $size/60 #333;
+  animation-duration: 60s * 60 * 12;
+  -webkit-animation-duration: 60s * 60 * 12;
+  -moz-animation-duration: 60s * 60 * 12;
+}
+
+.second.arm {
+  height:$size/2.2;
+  box-shadow: 0 0 0 $size/150 #a00;
+}
+
+.box {
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+}
+
+@for $i from 0 through 29 {
+  .minute-lines > .min-#{$i} {
+    transform: rotate($i * 6deg);
+    -moz-transform: rotate($i * 6deg);
+    -webkit-transform: rotate($i * 6deg);
+  }
+}
+
+.minute-lines {
+  width:100%;
+  height:100%;
+}
+
+.minute-lines > div::before, .minute-lines > div::after {
+  content:"";
+  position:absolute;
+  width:0px;
+  height: $size/40;
+  top: $size/2.25;
+  box-shadow: 0px 0px 0px 0.5px #000;
+}
+
+.minute-lines > div::after {
+  bottom: $size/2.25;
+  top:auto;
+}
+
+div.long::before, div.long::after {
+  height: $size/22;
+  top: $size/2.3675;
+}
+
+div.long::after {
+  bottom: $size/2.3675;
+  top:auto;
+}
+
+div.dark::before, div.dark::after {
+  box-shadow: 0px 0px 0px 1px #000;
+}

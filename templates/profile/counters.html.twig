@@ -1,0 +1,9 @@
+{% extends 'profile/index.html.twig' %}
+{% block content %}
+    <div class="counter-header" id="current_counter_block">
+        {% include 'profile/_current_counter_block.html.twig' %}
+    </div>
+    <div id="counter_list">
+        {% include 'profile/_counters_list.html.twig' %}
+    </div>
+{% endblock %}

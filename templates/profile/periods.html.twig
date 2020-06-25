@@ -1,0 +1,44 @@
+{% extends 'profile/index.html.twig' %}
+{% block javascripts %}
+    <script src="{{ asset('build/js/period.js') }}"></script>
+{% endblock %}
+{% block content %}
+    <table class="table list">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>{{ 'Name'|trans }}</th>
+            <th>{{ 'Time start'|trans }}</th>
+            <th>{{ 'Elapsed time'|trans }}</th>
+            <th>{{ 'CreatedAt'|trans }}</th>
+            <th>{{ 'Alert'|trans }}</th>
+            <th>{{ 'actions'|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for period in periods %}
+            <tr>
+                <td>{{ period.id }}</td>
+                <td>{{ period.name }}</td>
+                <td class="row_time_start">{{ period.timeStart|date('Y-m-d H:i:s') }}</td>
+                <td class="row_elapsed">{{ 'now'|date('Y-m-d H:i:s') }}</td>
+                <td>{{ period.createdAt ? period.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ period.alertTime ? period.alertTime|date('Y-m-d H:i:s'): '' }}</td>
+                <td>
+                    {% if app.user.id == period.user.id %}
+                        <a href="{{ path('period_edit', {'id': period.id}) }}">Edit</a>
+                        <a href="{{ path('period_delete', {'id': period.id}) }}">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="navigation">
+        {{ knp_pagination_render(periods) }}
+    </div>
+{% endblock %}

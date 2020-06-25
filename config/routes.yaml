@@ -1,0 +1,75 @@
+app_logout:
+  path: /logout
+
+default:
+  path: /
+  controller: App\Controller\DefaultController::index
+  methods:    GET
+
+profile:
+  path: /profile
+  controller: App\Controller\ProfileController::index
+  methods:    GET|POST
+
+user_project_list:
+  path: /profile/project
+  controller: App\Controller\ProfileController::project
+  methods:    GET
+
+project_edit:
+  path: /project/edit/{id}
+  controller: App\Controller\ProjectController::edit
+  methods:    GET|POST
+  defaults:
+    id: 0
+  requirements:
+    id: '\d+'
+
+project_delete:
+  path: /project/delete/{id}
+  controller: App\Controller\ProjectController::delete
+  methods:    GET|POST|DELETE
+  requirements:
+    id: '\d+'
+
+
+user_period_list:
+  path: /profile/period
+  controller: App\Controller\ProfileController::period
+  methods:    GET|POST
+
+period_edit:
+  path: /period/edit/{id}
+  controller: App\Controller\PeriodController::edit
+  methods:    GET|POST
+  defaults:
+    id: 0
+  requirements:
+    id: '\d+'
+
+period_delete:
+  path: /period/delete/{id}
+  controller: App\Controller\PeriodController::delete
+  methods:    GET|POST|DELETE
+  requirements:
+    id: '\d+'
+
+user_settings:
+  path: /profile/settings
+  controller: App\Controller\ProfileController::settings
+  methods:    GET
+
+counter_form:
+  path: /profile/counter_form
+  controller: App\Controller\ProfileController::counterBlockForm
+  methods: GET|POST
+
+admin:
+  path: /admin
+  controller: App\Controller\AdminController::index
+  methods: GET|POST
+
+admin_test:
+  path: /admin_test
+  controller: App\Admin\AdminController::index
+  methods: GET

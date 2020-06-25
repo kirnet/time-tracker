@@ -1,0 +1,22 @@
+easy_admin:
+  list:
+    max_results: 100
+  entities:
+    Project:
+      class: App\Entity\Project
+      list:
+        fields:
+          - { property: 'id' }
+          - { property: 'name' }
+          - { property: 'owner_id', type: 'entity' }
+          - { property: 'timers' }
+          - { property: 'description' }
+          - { property: 'created_at', type: 'datetime' }
+          - { property: 'logo', type: 'image', base_path: '/uploads/project_logo' }
+    Timer:
+      class: App\Entity\Timer
+    User:
+      class: App\Entity\User
+    Period:
+      class: App\Entity\Period
+  site_name: 'Admin'

@@ -1,0 +1,42 @@
+<table class="table vertical-middle">
+    <thead>
+    <tr>
+        <th class="hidden">Id</th>
+        <th>{% trans %}Name{% endtrans %}</th>
+        <th>{% trans %}Project{% endtrans %}</th>
+        <th>{% trans %}State{% endtrans %}</th>
+        <th>{% trans %}TimerStart{% endtrans %}</th>
+        <th>{% trans %}Time{% endtrans %}</th>
+        <th>{% trans %}CreatedAt{% endtrans %}</th>
+        <th>actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for timer in timers %}
+        {% set src = 'build/images/play_button32.png' %}
+        {% if timer.state == 'run' %}
+            {% set src = 'build/images/pause_button32.png' %}
+        {% endif %}
+        <tr>
+            <td class="hidden">{{ timer.id }}</td>
+            <td class="row_name">{{ timer.name }}</td>
+            <td class="row_project" {% if timer.project %}data-project_id="{{ timer.project.id }}"{% endif %}>{% if timer.project %}{{ timer.project.name }}{% endif %}</td>
+            <td class="counter_state">{{ timer.state }}</td>
+            <td>{{ timer.timerStart ? timer.timerStart|date('Y-m-d H:i:s') : '' }}</td>
+            <td class="row_timer">{% if timer.state == 'run' %}{{ (now - timer.timerStart|date('U') + timer.time) }}{% else %}{{ timer.time }}{% endif %}</td>
+            <td>{{ timer.createdAt ? timer.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>
+                <img class="timer_action" src="{{asset(src)}}" alt="" data-state="{{ timer.state }}" data-timer_id="{{ timer.id }}">
+                <img class="timer_stop {% if timer.state != 'pause' and timer.state != 'run' %}hidden{% endif %}" src="{{asset('build/images/stop_button32.png')}}" alt="" data-state="new" data-timer_id="{{ timer.id }}">
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="7">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="navigation">
+    {{ knp_pagination_render(timers) }}
+</div>
