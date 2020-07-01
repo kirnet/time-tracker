@@ -17,7 +17,7 @@ framework:
         options:
           queue_name: period_alert
           exchange:
-            name: email_notifications
+            name: period_alert_time
             type: fanout
 
     routing:

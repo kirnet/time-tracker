@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Project;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Helpers\DatesHelper;
 use App\Repository\PeriodRepository;
 use App\Repository\ProjectRepository;
 use App\Repository\TimerRepository;
@@ -18,17 +19,10 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ProfileController extends AbstractController
 {
-    /** @var PaginatorInterface  */
-    private $paginator;
-
-    /** @var UserRepository  */
-    private $userRepository;
-
-    /** @var ProjectRepository  */
-    private $projectRepository;
-
-    /** @var PeriodRepository */
-    private $periodRepository;
+    private PaginatorInterface $paginator;
+    private UserRepository $userRepository;
+    private ProjectRepository $projectRepository;
+    private PeriodRepository $periodRepository;
 
     /**
      * ProfileController constructor.
@@ -97,6 +91,11 @@ class ProfileController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     public function period(Request $request)
     {
         $userId = $this->getUser()->getId();

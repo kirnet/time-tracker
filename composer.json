@@ -10,34 +10,36 @@
         "knplabs/knp-paginator-bundle": "^5.2",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/amqp-messenger": "5.1.0",
-        "symfony/asset": "5.1.0",
-        "symfony/console": "5.1.0",
-        "symfony/debug-bundle": "5.1.0",
-        "symfony/dotenv": "5.1.*",
+        "symfony/asset": "^5.1",
+        "symfony/console": "^5.1",
+        "symfony/debug-bundle": "^5.1",
+        "symfony/dotenv": "^5.1",
         "symfony/event-dispatcher": "^5.1",
         "symfony/flex": "^1.1",
-        "symfony/form": "5.1.0",
-        "symfony/framework-bundle": "5.1.0",
-        "symfony/messenger": "5.1.0",
-        "symfony/mime": "5.1.0",
+        "symfony/form": "^5.1",
+        "symfony/framework-bundle": "^5.1",
+        "symfony/mailer": "^5.1",
+        "symfony/messenger": "^5.1",
+        "symfony/mime": "^5.1",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "^1.0",
-        "symfony/process": "5.1.0",
-        "symfony/security-bundle": "5.1.*",
-        "symfony/serializer": "5.1.0",
+        "symfony/process": "^5.1",
+        "symfony/security-bundle": "^5.1",
+        "symfony/serializer": "^5.1",
         "symfony/serializer-pack": "1.0.3",
         "symfony/swiftmailer-bundle": "^3.1",
-        "symfony/translation": "5.1.0",
+        "symfony/translation": "^5.1",
         "symfony/twig-pack": "^1.0",
-        "symfony/validator": "5.1.*",
-        "symfony/var-dumper": "5.1.*",
-        "symfony/web-link": "5.1.*",
+        "symfony/validator": "^5.1",
+        "symfony/var-dumper": "^5.1",
+        "symfony/web-link": "^5.1",
         "symfony/webpack-encore-bundle": "^1.0",
-        "symfony/yaml": "5.1.*"
+        "symfony/yaml": "^5.1"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "symfony/maker-bundle": "^1.19",
-        "doctrine/doctrine-fixtures-bundle": "^3.0"
+        "symfony/phpunit-bridge": "^5.1"
     },
     "config": {
         "preferred-install": {
@@ -78,7 +80,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": "true",
-            "require": "5.1.0"
+            "require": "^5.1"
         }
     }
 }

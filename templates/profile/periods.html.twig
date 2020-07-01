@@ -3,7 +3,7 @@
     <script src="{{ asset('build/js/period.js') }}"></script>
 {% endblock %}
 {% block content %}
-    <table class="table list">
+    <table class="table list table-striped">
         <thead>
         <tr>
             <th>Id</th>
@@ -22,7 +22,7 @@
                 <td>{{ period.name }}</td>
                 <td class="row_time_start">{{ period.timeStart|date('Y-m-d H:i:s') }}</td>
                 <td class="row_elapsed">{{ 'now'|date('Y-m-d H:i:s') }}</td>
-                <td>{{ period.createdAt ? period.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ period.createdAt ? period.createdAt|date("Y-m-d H:i:s") : '' }}</td>
                 <td>{{ period.alertTime ? period.alertTime|date('Y-m-d H:i:s'): '' }}</td>
                 <td>
                     {% if app.user.id == period.user.id %}
