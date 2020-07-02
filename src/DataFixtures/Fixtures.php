@@ -4,15 +4,21 @@ namespace App\DataFixtures;
 
 use App\Entity\Project;
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\Persistence\ObjectManager;
 
 class Fixtures extends Fixture
 {
-    /** @var UserPasswordEncoderInterface  */
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
+    /**
+     * Fixtures constructor.
+     *
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
@@ -21,7 +27,7 @@ class Fixtures extends Fixture
     /**
      * @param ObjectManager $manager
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(ObjectManager $manager)
     {
@@ -29,7 +35,7 @@ class Fixtures extends Fixture
         $entity->setEmail('admin@admin.by');
         $entity->setLogin('admin');
         $entity->setIsBanned(0);
-        $entity->setRegisterAt(new \DateTime());
+        $entity->setRegisterAt(new DateTime());
         $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
         $entity->setRoles(['ROLE_ADMIN']);
         $manager->persist($entity);
@@ -38,7 +44,7 @@ class Fixtures extends Fixture
         $entity->setEmail('user@user.by');
         $entity->setLogin('user');
         $entity->setIsBanned(0);
-        $entity->setRegisterAt(new \DateTime());
+        $entity->setRegisterAt(new DateTime());
         $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
         $entity->setRoles(['ROLE_USER']);
         $manager->persist($entity);
@@ -48,11 +54,21 @@ class Fixtures extends Fixture
             $entity->setEmail("user{$i}@user.by");
             $entity->setLogin("user{$i}");
             $entity->setIsBanned(0);
-            $entity->setRegisterAt(new \DateTime());
+            $entity->setRegisterAt(new DateTime());
             $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
             $entity->setRoles(['ROLE_USER']);
             $manager->persist($entity);
         }
+
+        $entity = new User();
+        $entity->setEmail("test@test.by");
+        $entity->setLogin("test");
+        $entity->setIsBanned(0);
+        $entity->setRegisterAt(new DateTime());
+        $entity->setPassword($this->passwordEncoder->encodePassword($entity, '111111'));
+        $entity->setRoles(['ROLE_USER']);
+        $manager->persist($entity);
+
         $manager->flush();
 
 //        $entity = new Project();

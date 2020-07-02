@@ -16,19 +16,22 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class PeriodType extends AbstractType
 {
-    /** @var UserRepository */
-    private $userRepository;
+//    private UserRepository $userRepository;
 
     /**
      * ProjectType constructor.
      *
      * @param UserRepository $userRepository
      */
-    public function __construct(UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
-    }
+//    public function __construct(UserRepository $userRepository)
+//    {
+//        $this->userRepository = $userRepository;
+//    }
 
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
