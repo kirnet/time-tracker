@@ -8,6 +8,8 @@ parameters:
     pathProjectLogo: '%kernel.project_dir%/public/uploads/project_logo'
     projectLogoWidth: 50
     projectLogoHeight: 50
+    fromEmail: '%env(FROM_EMAIL)%'
+    MAILER_DSN: '%env(MAILER_DSN)%'
 
 services:
     session.handler.pdo:

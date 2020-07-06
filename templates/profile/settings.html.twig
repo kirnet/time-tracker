@@ -2,17 +2,7 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
 
 {% block content %}
-    {% block body %}
-        <div class="container">
+    <div class="container">
         {{ form(form) }}
-        </div>
-    {% endblock %}
+    </div>
 {% endblock %}
-{#{% block content %}#}
-{#    <div class="container">#}
-{#        {{ form_start(form) }}#}
-{#        {{ form_errors(form) }}#}
-{#        {{ form_row(form.login, {'attr': {'class': 'form-control'}}) }}#}
-{#        {{ form_end(form) }}#}
-{#    </div>#}
-{#{% endblock %}#}
