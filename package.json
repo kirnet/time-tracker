@@ -18,7 +18,7 @@
     "core-js": "3",
     "easytimer": "^1.1.1",
     "font-awesome": "^4.7.0",
-    "moment": "^2.26.0"
+    "moment": "^2.29.4"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^0.22.2",
